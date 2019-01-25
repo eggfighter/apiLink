@@ -1,0 +1,521 @@
+<script language="javascript">
+<!--
+function setIcon(obj, flag) {
+	if (flag) {
+		var url = "$link.getContextPath()/images/ico/ico_" + obj.id + ".gif";
+		obj.style.background = "url(" + url + ") no-repeat"; 
+	} else {
+		obj.style.background = "";
+	}
+}
+onload = function() {
+	var obj;
+	obj = document.getElementById("webid");
+	if (obj.value == '') setIcon(obj, true);
+}
+//-->
+</script>
+
+#set( $titleImage = $link.getContextPath() + "/images/sub/cm/title_cm_" + $menu.getPathKey() + ".gif" )
+
+						<form name="searchForm" method="get">
+					    <input type="hidden" name="pCn" />
+					    <input type="hidden" name="pNcid" />
+						<div class="cs">
+							<div class="cs-search"><img src="$titleImage" border="0" /></div>
+							<div class="cs-search"><input name="cn" type="text" id="webid" class="webid" tabindex="1"
+								onfocus="this.className='webid webidOn'; setIcon(this, false);"
+								onblur="this.className='webid'; if (this.value == '') setIcon(this, true);"
+								onkeypress="if (event.keyCode == 13) search();"
+								/></div>
+							<div class="cs-search"><a href="javascript:search()"><img src="$link.getContextPath()/images/sub/cm/btn_serach.gif" tabindex="3" border="0" /></a></div>
+						</div>
+						</form>
+						#if( !$customerVo.displayname)
+						<div class="alret">
+							<p class="pad20">
+								검색 결과 데이터가 존재하지 않습니다.
+							</p>
+						</div>
+						#else
+						<form name="customerForm" method="post">
+						
+						<div class="list_detail">
+							<center>
+								<div class="box">
+									<table width="800px" border="0" cellspacing="0" cellpadding="0" align="center">
+										<tr height="25px">
+											<td bgcolor="#d6d6d6">
+												<table width="800" border="0" cellspacing="1" cellpadding="1">
+													<tr height="45">
+														<td class="tt">항목명</td>
+														<td class="tt">이전값</td>
+														<td class="tt">변경값</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															사용자 ID
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.cn
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="cn" size="30" />
+														</td>
+													</tr>
+													<tr title="1 : 개인 / 2 : 법인 / 3 : 외국인 / S: 오픈BM">
+														<td class="tone" bgcolor="#f7f7f7">
+															고객 TYPE
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.customert
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="customert" size="30" maxlength="1" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															집 전화번호
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.homephone
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="homephone" size="30" maxlength="20" />
+														</td>
+													</tr>
+													<tr title="A:수신함, B:수신안함">
+														<td class="tone" bgcolor="#f7f7f7">
+															SMS 수신
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.receiver
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="receiver" size="30" maxlength="1" />
+														</td>
+													</tr>
+													<tr title="Y:차단안함, N:차단함">
+														<td class="tone" bgcolor="#f7f7f7">
+															Email 수신
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.mreceiver
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="mreceiver" size="30" maxlength="1" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															변경일시
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.updatetime
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="updatetime" size="30" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															생년월일
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.birthday
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="birthday" size="30" maxlength="8" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															계약번호
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.contractnum
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="contractnum" size="30" maxlength="15" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															타 이메일 주소
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.otherm
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="otherm" size="30" maxlength="100" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															계약자(가입자) 이름
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.conncidname
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="conncidname" size="30" maxlength="60" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															사업자 등록번호
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.brn
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="brn" size="30" maxlength="10" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															한글 이름
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.displayname
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="displayname" size="30" maxlength="60" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															비밀번호 힌트
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															#foreach( $array in $pwdhintArr )
+																#if( $array[0] == $!customerVo.pwdhint )
+																	$array[1]
+																#end
+															#end
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<select name="pwdhint">
+															#foreach( $array in $pwdhintArr )
+																<option value="$array[0]">$array[1]</option>
+															#end
+															</select>
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															질문의 답변
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.pwdanswer
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="pwdanswer" size="30" maxlength="100" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															마지막접속일
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.lastlogin
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="lastlogin" size="20" />
+															<input type="button" value="현재시간으로" onclick="modLastLogin()"/>
+#if( $authUtil.hasAuthority($session, "ROLE_SUPERVISOR") )
+															<br>
+															<input type="button" value="400일 전으로" onclick="modLastLogin400()"/>
+#end
+														</td>
+													</tr>
+#if( $authUtil.hasAuthority($session, "ROLE_SUPERVISOR") )
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															비밀번호 변경일
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.pwdupdatetime
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="pwdupdatetime" size="20" />
+															<input type="button" value="100일 전으로" onclick="modPwdupdatetime100()"/>
+														</td>
+													</tr>
+#end
+<!--
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															추천자 ID
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.nominatorid
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="nominatorid" size="30" maxlength="20" />
+														</td>
+													</tr>
+-->
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															가입일시
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.regdate
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="regdate" size="30" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															가입경로
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.regip
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="regip" size="30" maxlength="32" />
+														</td>
+													</tr>
+													<tr title="(1:실명, 0 or null:비실명)">
+														<td class="tone" bgcolor="#f7f7f7">
+															실명인증 여부
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.realnamechoice
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="realnamechoice" size="30" maxlength="1" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															폰 일시정지 여부
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.svcoff
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="svcoff" size="30" maxlength="1" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															이동전화번호
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.mobile
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="mobile" size="30" maxlength="12" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															KPM 가입여부
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.kpm
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="kpm" size="30" maxlength="1" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															비밀번호
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															&nbsp;
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="userpwd" size="30" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															변경사유
+														</td>
+														<td colspan="2" class="ttwo" bgcolor="#ffffff">
+															<select name="act">
+																<option value="1">변경</option>
+																<option value="2">삭제</option>
+															</select>
+															<br>
+															<textarea name="reason" rows="3" cols="80"></textarea>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</center>
+						</div>
+						<div style="padding: 10px 0 20px 0; text-align: center;">
+							<a href="javascript:list()"><img src="$link.getContextPath()/images/button/btn_list.gif" border="0" /></a>
+							<a href="javascript:view()"><img src="$link.getContextPath()/images/button/btn_view.gif" border="0" /></a>
+							<a href="javascript:void(submitForm())"><img src="$link.getContextPath()/images/button/btn_save.gif" border="0" /></a>
+							<a href="javascript:init()"><img src="$link.getContextPath()/images/button/btn_reset.gif" border="0" /></a>
+						</div>
+						#end
+						<div class="alret">
+							<p class="orange-bold">Tip. 중요공지</p>
+							<p class="pad20">
+								<b>- 수정/삭제된 데이터는 복구되지 않습니다.</b></br> <b>- 기존의 유선정보와 무선정보가 통합되었습니다.</b></br>
+								&nbsp;&nbsp;&nbsp;즉, 인증정보가 기존의 유선정보 + 무선정보 이며, 사용자정보는 그대로입니다.</br>
+								&nbsp;&nbsp;&nbsp;어떤 사용자이든지, 둘다 존재하여야 하며, 그렇지 않을 경우에는 반드시 웹마스터에게 알려주시기
+								바랍니다.</br> <b>- 어느쪽이든 변경하시면...</b></br> &nbsp;&nbsp;&nbsp;인증정보와 사용자정보에 모두 반영됩니다.
+								작업시 변경되지 않거나 에러 경고를 보시면 반드시 웹마스터에게 알려주시기 바랍니다.</br> &nbsp;&nbsp;&nbsp;수정
+								버튼은 관리자 그룹에게만 보여집니다.</br>
+							</p>
+						</div>
+						</form>
+
+<script language="javascript" src="$link.getContextPath()/js/common.js"></script>
+<script language="javascript">
+<!--
+
+function search() {
+	document.searchForm.action = "$link.getContextPath()/customer/form.do";
+	document.searchForm.method = "get";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function view() {
+	document.searchForm.action = "$link.getContextPath()/customer/view.do";
+	document.searchForm.method = "get";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+
+}
+
+function list()
+{
+	document.searchForm.action = "$link.getContextPath()/customer/list.do";
+	document.searchForm.method = "get";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function init() {
+	// init search parameters
+	var sf = document.searchForm;
+	sf.cn.value		= "$!params.cn";
+	sf.pCn.value	= "$!params.pCn";
+	sf.pNcid.value	= "$!params.pNcid";
+	
+#if( "$!customerVo.cn" != "")
+	// init update form
+	var cf = document.customerForm;
+	cf.cn.value				= "$!customerVo.cn";
+	cf.customert.value		= "$!customerVo.customert";
+	cf.homephone.value		= "$!customerVo.homephone";
+	cf.receiver.value		= "$!customerVo.receiver";
+	cf.mreceiver.value		= "$!customerVo.mreceiver";
+	cf.updatetime.value		= "$!customerVo.updatetime";
+	cf.birthday.value		= "$!customerVo.birthday";
+	cf.contractnum.value	= "$!customerVo.contractnum";
+	cf.otherm.value			= "$!customerVo.otherm";
+	cf.conncidname.value	= "$!customerVo.conncidname";
+	cf.brn.value			= "$!customerVo.brn";
+	cf.displayname.value	= "$!customerVo.displayname";
+	setComboBox(cf.pwdhint, "$!customerVo.pwdhint");
+	cf.pwdanswer.value		= "$!customerVo.pwdanswer";
+	cf.lastlogin.value		= "$!customerVo.lastlogin";
+#if( $authUtil.hasAuthority($session, "ROLE_SUPERVISOR") )
+	cf.pwdupdatetime.value	= "$!customerVo.pwdupdatetime";
+#end	
+	// cf.nominatorid.value	= "$!customerVo.nominatorid";
+	cf.regdate.value		= "$!customerVo.regdate";
+	cf.regip.value			= "$!customerVo.regip";
+	cf.realnamechoice.value	= "$!customerVo.realnamechoice";
+	cf.svcoff.value			= "$!customerVo.svcoff";
+	cf.mobile.value			= "$!customerVo.mobile";
+	cf.kpm.value			= "$!customerVo.kpm";
+	cf.userpwd.value		= "";
+	cf.reason.value			= "";
+	
+	cf.cn.readOnly = true;
+	cf.regdate.readOnly = true;
+	cf.mobile.readOnly = true;
+#end
+	
+}
+
+function setComboBox(box, val) {
+	if (val != "") box.value = val;
+}
+
+init();
+
+function modLastLogin() {
+	document.customerForm.lastlogin.value = "$date.get('yyyy-MM-dd HH:mm:ss')";
+}
+
+#if( $authUtil.hasAuthority($session, "ROLE_SUPERVISOR") )
+	#set( $days400 = ($date.getSystemTime() - 34560000000) )
+	#set( $days100 = ($date.getSystemTime() - 8640000000) )
+	
+function modLastLogin400() {
+	document.customerForm.lastlogin.value = "$date.format('yyyy-MM-dd HH:mm:ss', $days400)";
+}
+
+function modPwdupdatetime100() {
+	document.customerForm.pwdupdatetime.value = "$date.format('yyyy-MM-dd HH:mm:ss', $days100)";
+}
+
+#end
+
+function submitForm()
+{
+	var cf = document.customerForm;
+	
+	if (cf.reason.value.length == 0)
+	{
+		alert("변경사유를 반드시 적으셔야 합니다!");
+		cf.reason.focus();
+		return;
+	}
+	
+	if (cf.act.value == "1") {	// 변경
+		
+		if (!confirm("정말로 수정하시겠습니까?")) {
+			return;
+		}
+		cf.action = "$link.getContextPath()/customer/mod.do";
+		cf.method = "post";
+		cf.target = "hiddenIFrame";
+		cf.submit();
+		
+	}
+	else if (cf.act.value == "2") {	// 삭제
+		
+		#if( "$!customerVo.kpm" == "Y" )
+			// KPM 가입자의 경우 탈퇴 제한 (2010-06-18 허수영)
+			alert("KPM 가입자의 경우 KPM 탈퇴 후 삭제 가능합니다.");
+			return;
+		#end
+		#if( "$!customerVo.customert" == "S" )
+			// '오픈BM을 통해 가입한 사용자일 경우 구분 시작
+			if (!confirm("오픈BM 가입자입니다. 정말로 삭제하시겠습니까?"))
+				return;
+		#else
+			if (!confirm("정말로 삭제하시겠습니까?")) {
+				return;
+			}
+		#end
+		
+		cf.action = "$link.getContextPath()/customer/del.do";
+		cf.method = "post";
+		cf.target = "hiddenIFrame";
+		cf.submit();
+		
+	}
+}
+//-->
+</script>
+<iframe name="hiddenIFrame" src="" frameborder="0" height="0" width="100%"></iframe>

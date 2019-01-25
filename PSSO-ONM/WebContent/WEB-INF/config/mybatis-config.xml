@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "HTTP://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="false" />
+		<setting name="useGeneratedKeys" value="true" />
+		<setting name="defaultExecutorType" value="REUSE" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="com.kt.psso.onm.common.SearchVo" alias="SearchVo"/>
+		<typeAlias type="com.kt.psso.onm.admin.member.MemberVo" alias="MemberVo"/>
+		<typeAlias type="com.kt.psso.onm.customer.CustomerVo" alias="CustomerVo"/>
+		<typeAlias type="com.kt.psso.onm.seceder.SecederVo" alias="SecederVo"/>
+		<typeAlias type="com.kt.psso.onm.custom14.Custom14Vo" alias="Custom14Vo"/>
+		<typeAlias type="com.kt.psso.onm.scheduler.eventstat.EventStatVo" alias="EventStatVo"/>
+		<typeAlias type="com.kt.psso.onm.scheduler.eventlog.EventLogVo" alias="EventLogVo"/>
+		<typeAlias type="com.kt.psso.onm.eventstat.EventStatSearchVo" alias="EventStatSearchVo"/>
+		<typeAlias type="com.kt.psso.onm.terms.TermsVersionVo" alias="TermsVersionVo"/>
+		<typeAlias type="com.kt.psso.onm.restore.RestoreVo" alias="RestoreVo"/>
+		<typeAlias type="com.kt.psso.onm.scheduler.authcheck.AuthCheckVo" alias="AuthCheckVo"/>
+		<typeAlias type="com.kt.psso.onm.authcheck.AuthCheckSearchVo" alias="AuthCheckSearchVo"/>
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="com/kt/psso/db/sql/member.xml" />
+		<mapper resource="com/kt/psso/db/sql/customer.xml" />
+		<mapper resource="com/kt/psso/db/sql/seceder.xml" />
+		<mapper resource="com/kt/psso/db/sql/custom14.xml" />
+		<mapper resource="com/kt/psso/db/sql/eventstat.xml" />
+		<mapper resource="com/kt/psso/db/sql/eventlog.xml" />
+		<mapper resource="com/kt/psso/db/sql/termsversion.xml" />
+		<mapper resource="com/kt/psso/db/sql/marklog.xml" />
+		<mapper resource="com/kt/psso/db/sql/phonechk.xml" />
+		<mapper resource="com/kt/psso/db/sql/restore.xml" />
+		<mapper resource="com/kt/psso/db/sql/authcheck.xml" />
+	</mappers>
+</configuration>

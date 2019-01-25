@@ -1,0 +1,18 @@
+<script language="javascript">
+<!--
+var result = "$!result";
+if( result == "true")
+{
+	alert("성공적으로 인증하셨습니다.");
+	//location.href="$link.getContextPath()/customer/list.do";
+	window.open("$link.getContextPath()/customer/list.do", "_self");
+
+
+
+}if( result == "false")
+{
+	alert("인증번호가 다릅니다.다시한번 인증번호를 발송하여 확인하여 주십시오.");
+	window.open("$link.getContextPath()/member/otp.do", "_self");
+}
+//-->
+</script>

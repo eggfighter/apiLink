@@ -1,0 +1,529 @@
+<script language="javascript">
+<!--
+function setIcon(obj, flag) {
+	if (flag) {
+		var url = "$link.getContextPath()/images/ico/ico_" + obj.id + ".gif";
+		obj.style.background = "url(" + url + ") no-repeat"; 
+	} else {
+		obj.style.background = "";
+	}
+}
+onload = function() {
+	var obj;
+	obj = document.getElementById("webid");
+	if (obj.value == '') setIcon(obj, true);
+	obj = document.getElementById("webjumin");
+	if (obj.value == '') setIcon(obj, true);
+	obj = document.getElementById("webdate");
+	if (obj.value == '') setIcon(obj, true);
+	
+}
+//-->
+</script>
+
+#set( $titleImage = $link.getContextPath() + "/images/sub/cm/title_cm_" + $menu.getPathKey() + ".gif" )
+
+						<form name="searchForm" method="post">
+						<input type="hidden" name="cn" />
+						<div class="cs">
+							<div class="cs-search"><img src="$titleImage" border="0" /></div>
+							<div class="cs-search"><input name="pCn" type="text" id="webid" class="webid" tabindex="1"
+								onfocus="this.className='webid webidOn'; setIcon(this, false);"
+								onblur="this.className='webid'; if (this.value == '') setIcon(this, true);"
+								onkeypress="if (event.keyCode == 13) search();"
+								/></div>
+							<div class="cs-search"><input name="pNcid" type="password" id="webjumin" class="webjumin" tabindex="2"
+								onfocus="this.className='webjumin webjuminOn'; setIcon(this, false);"
+								onblur="this.className='webjumin'; if (this.value == '') setIcon(this, true);"
+								onkeypress="if (event.keyCode == 13) search();"
+								autocomplete="off"/>
+							</div>
+							<div class="cs-search"><input name="pDate" type="text" id="webdate" class="webjumin" tabindex="3"
+								onfocus="this.className='webjumin webjuminOn'; setIcon(this, false);"
+								onblur="this.className='webjumin'; if (this.value == '') setIcon(this, true);"
+								onkeypress="if (event.keyCode == 13) search();"
+								/></div>
+							<div class="cs-search"><input type="image" onClick="javascript:search()" src="$link.getContextPath()/images/sub/cm/btn_serach.gif" tabindex="4" border="0"  formmethod="post"/><!-- a href="javascript:search()"><img src="$link.getContextPath()/images/sub/cm/btn_serach.gif" tabindex="3" border="0" /></a> --></div>
+						</div>
+						</form>
+
+						<div class="list_detail">
+							<center>
+								<div class="box">
+									<table width="800px" border="0" cellspacing="0" cellpadding="0" align="center">
+										<tr height="25px">
+											<td bgcolor="#d6d6d6">
+												<table width="800" border="0" cellspacing="1" cellpadding="1">
+													<tr height="45">
+														<td width="40%" class="tt">항목명</td>
+														<td width="60%" class="tt">항목값</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															사용자 ID
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.cn
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															계약번호
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.contractnum
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															고객 ID
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.customerid
+														</td>
+													</tr>
+													<tr title="1 : 개인 / 2 : 법인 / 3 : 외국인 / S: 오픈BM">
+														<td class="tone" bgcolor="#f7f7f7">
+															고객 TYPE
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.customert
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															E-Mail Notification
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.mreceiver
+															<span class="orange">(Y:차단안함, N:차단함)</span>
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															단말기 모델명
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.modelname
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															기입경로
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.regip
+														</td>
+													</tr>
+#if( $authUtil.hasAuthority($session, "ROLE_SUPERVISOR") || $authUtil.hasAuthority($session, "ROLE_USERALL") )
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															주민번호암호화여부
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.encchk
+														</td>
+													</tr>
+#end
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															i-PIN
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.ipin
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															가입방식
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.joinchk
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															이름
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.displayname
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															생년월일
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.birthday
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															집 전화번호
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.homephone
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															타 이메일 주소
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.otherm
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															SMS 수신여부
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.receiver
+															<span class="orange">(A:수신함, B:수신안함)</span>
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															성별
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.gender
+															<span class="orange">(6:남자 / 7:여자)</span>
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															이동전화번호
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.mobile
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															일시정지여부
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.svcoff
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															실명여부
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.realnamechoice
+															<span class="orange">(1:실명, 0 or null:비실명)</span>
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															사업자 등록번호
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.brn
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															계약자(가입자) 이름
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.conncidname
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															비밀번호 힌트
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.pwdhint
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															질문의 답변
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.pwdanswer
+														</td>
+													</tr>
+#if( $authUtil.hasAuthority($session, "ROLE_SUPERVISOR") || $authUtil.hasAuthority($session, "ROLE_USERALL") )
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															마지막접속사이트
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.lastloginsite
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															비밀번호 초기화 시간
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.pwdresettime
+														</td>
+													</tr>
+#end
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															마지막 접속일
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.lastlogin
+														</td>
+													</tr>
+
+<!--
+ 													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															추천자 ID
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.nominatorid
+														</td>
+													</tr>
+-->
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															가입일시
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.regdate
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															변경일시
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.updatetime
+														</td>
+													</tr>
+#if( $authUtil.hasAuthority($session, "ROLE_SUPERVISOR") || $authUtil.hasAuthority($session, "ROLE_USERALL") )
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															비밀번호 변경일시
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.pwdupdatetime
+														</td>
+													</tr>
+#end
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															SEQID
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.comImsinum
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															유컴가입여부
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.comRegchk
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															AGM3
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.agm3
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															AGM3_DATE
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.agm3Date
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															AGM4
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.agm4
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															AGM4_DATE
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.agm4Date
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															AGM5
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.agm5
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															AGM5_DATE
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.agm5Date
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															도시락임시아이디
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.tempid
+														</td>
+													</tr>
+#if( $authUtil.hasAuthority($session, "ROLE_SUPERVISOR") || $authUtil.hasAuthority($session, "ROLE_USERALL") )
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															단방향 PW
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.encuserpwd
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															KPM 가입 여부
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+#if( "$!customerVo.kpm" == "Y" )
+															가입
+#elseif( "$!customerVo.kpm" == "N" )
+															해지
+#else
+															미가입
+#end
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															스마트폰 회원여부
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+	#if( "$!customerVo.mregchk" == "" )
+															미가입
+	#elseif( $stringUtil.rightString("$!customerVo.mregchk", 3) == "WEB" )
+															웹전환회원($!customerVo.mregchk)
+	#elseif( $stringUtil.rightString("$!customerVo.mregchk", 2) == "14" )
+															14세 정회원 미인증($!customerVo.mregchk)
+	#else
+															가입($!customerVo.mregchk)
+	#end
+														</td>
+													</tr>
+#end
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															OLLEHAGM
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.ollehagm
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															OLLEHAGM_DATE
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!customerVo.ollehagmDate
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</center>
+						</div>
+						<div style="padding: 10px 0 20px 0; text-align: center;">
+							<a href="javascript:list()"><img src="$link.getContextPath()/images/button/btn_list.gif" border="0" /></a>
+#if( $authUtil.hasAuthority($session, "ROLE_SUPERVISOR")
+  || $authUtil.hasAuthority($session, "ROLE_USERWRITE")
+  || $authUtil.hasAuthority($session, "ROLE_USERALL") )
+							<a href="javascript:modForm()"><img src="$link.getContextPath()/images/button/btn_change.gif" border="0" /></a>
+							<input type="button" value="비밀번호 초기화" onclick="pwreset()" />
+#end
+						</div>
+						<div class="alret">
+							<p class="orange-bold">Tip. 중요공지</p>
+							<p class="pad20">
+								<b>- 수정/삭제된 데이터는 복구되지 않습니다.</b></br> <b>- 기존의 유선정보와 무선정보가 통합되었습니다.</b></br>
+								&nbsp;&nbsp;&nbsp;즉, 인증정보가 기존의 유선정보 + 무선정보 이며, 사용자정보는 그대로입니다.</br>
+								&nbsp;&nbsp;&nbsp;어떤 사용자이든지, 둘다 존재하여야 하며, 그렇지 않을 경우에는 반드시 웹마스터에게 알려주시기
+								바랍니다.</br> <b>- 어느쪽이든 변경하시면...</b></br> &nbsp;&nbsp;&nbsp;인증정보와 사용자정보에 모두 반영됩니다.
+								작업시 변경되지 않거나 에러 경고를 보시면 반드시 웹마스터에게 알려주시기 바랍니다.</br> &nbsp;&nbsp;&nbsp;수정
+								버튼은 관리자 그룹에게만 보여집니다.</br>
+							</p>
+						</div>
+
+
+<script language="javascript" src="$link.getContextPath()/js/common.js"></script>
+<script language="javascript">
+<!--
+
+function search() {
+	var regdate = document.searchForm.pDate.value
+	
+	if (regdate != "" ){
+		if(!checkLengthBetween(regdate, 7, 8))
+		{
+			alert("가입일자를 확인하시고 다시 입력해 주세요."
+					+" 가입일자는 ex) 20120101  형식으로 입력해 주세요.");
+			mf.regdate.focus();
+			return false;
+		}
+	}
+	document.searchForm.cn.value = "";
+	document.searchForm.action = "$link.getContextPath()/customer/list.do";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function list()
+{
+	document.searchForm.cn.value = "";
+	document.searchForm.action = "$link.getContextPath()/customer/list.do";
+	document.searchForm.method = "get";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function modForm() {
+	document.searchForm.cn.value = "$!customerVo.cn";
+	document.searchForm.action = "$link.getContextPath()/customer/form.do";
+	document.searchForm.method = "get";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function pwreset() {
+	document.searchForm.cn.value = "$!customerVo.cn";
+	document.searchForm.action = "$link.getContextPath()/customer/pwreset.do";
+	document.searchForm.method = "post";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+
+function init() {
+	// init search parameters
+	var sf = document.searchForm;
+	sf.pCn.value	= "$!params.pCn";
+	sf.pNcid.value	= "$!params.pNcid";
+	sf.pDate.value	= "$!params.pDate";
+}
+
+init();
+//-->
+</script>

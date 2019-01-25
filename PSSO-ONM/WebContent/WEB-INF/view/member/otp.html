@@ -1,0 +1,146 @@
+<body class="bg_no">
+	<!-- ollehWrap -->
+	<div id="cfmOllehWrap">
+		<div>
+		<!--#include Virtual="/Join_Olleh/inc/top_gnb.asp"-->
+		</div>
+		<!-- Olleh Contents -->
+		<div id="cfmOllehContentAll" style="margin-bottom: 55px"><!-- width : 980px -->
+			<!-- title, location -->
+			<ul class="cfmOllehContTitle">
+				<li class="Txt"><img src="../images/new_pps/opt_title.gif" alt="인증번호 받기" class="cfmOllehMarLt21" /></li>		
+			</ul>
+			<!--// title, location -->
+			<!-- Contents -->
+			<div id="cfmOllehContsMain">
+				<!-- 새 비밀번호 등록 컨텐츠 -->
+				<div class="cfmOllehMemberAgree">
+					
+					<!-- Contents box -->
+					<div class="cfmOllehAgree">
+						<!-- 왼쪽 이미지 영역 -->
+						<div class="ltBox"><img src="../images/new_pps/opt.gif" alt="" /></div>
+						<!--// 왼쪽 이미지 영역 -->
+						<!-- 오른쪽 영역 -->
+						<div class="rtBox">
+							<p><img src="../images/new_pps/opt_sms.gif" alt="SMS로 인증번호를 받으세요" /></p>
+							<p class="memberTxtSub cfmOllehMarTp10">핸드폰 번호 확인 후, <span class="cfmOllehPopUpGrayTxt">‘인증번호 받기 버튼’</span>을 클릭하시면 SMS로 인증번호가 전송됩니다.</p><!-- 11.17 수정 -->
+							<div class="cfmOlleDefaultRightGray">* OTP 인증번호는 6자리 숫자로 생성됩니다</div>
+							
+							<form name = "memberForm" method="post" >
+							<input type="hidden" name="otpSeq" id="otpSeq" value="">
+							<input type="hidden" name="userId" id="userId" value="">
+								
+
+							<!-- 테이블 리스트 -->
+							<div class="defaultTblBorderMemberForm670">
+							<table class="defaultTbl" summary="회원가입 시 작성하였던 정보를 입력">	
+							<colgroup><col width="150px"><col width=""></colgroup>			
+								<tbody>						
+									<tr>
+										<th class="lt30">
+											<label for="hpNumber">핸드폰 번호</label>
+										</th>
+										<td class="lt10"> 
+											<input type="text" name="telNo" id="telNo" readonly class="inputMemberForm cfmOllehMarRt05" style="width:230px;height:20px;" />
+											<a href="javascript:sendSms();" onfocus="this.blur();" class="cfmOllehBtnSystem">
+												<span>인증번호 받기</span>
+											</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							</div>
+							<!--// 테이블 리스트 -->
+
+							<!-- 라운드박스 -->
+							<div class="cfmOllehClear cfmOllehDefaultGrayBox668 cfmOllehMarTp20">
+								<div class="guide"><span class="tl"></span><span class="tr"></span></div>
+								<div class="cont">							
+									<p class="cfmOllehMemberBox01Ct">
+										<strong class="cfmOllehMarRt05 font_11_3d3d3d">인증번호 입력</strong><input type="text" id="inOtpVerfNo" name="inOtpVerfNo" maxlength="8"  onkeyup="onlynum(document.form1.check_num);" OnKeyDown="if (event.keyCode==13) onclick_SMS_NUM_submit(document.form1)"  id="email" class="inputMemberForm" style="width:230px;height:20px;" />
+										<!-- 버튼 --><a href="javascript:confirm();" onfocus="this.blur();" class="cfmOllehBtnPoint"><span>확인</span></a><!--// 버튼 -->
+										<!-- 버튼 --><!--<a href="#" class="cfmOllehBtnSystem"><span>새 비밀번호 등록</span></a>--><!--// 버튼 -->
+									</p>
+								</div>
+								<div class="guide"><span class="lb"></span><span class="rb"></span></div>
+							</div>
+							<!--// 라운드박스 -->
+
+							<!--<div class="cfmOllehBSmGraySPosition font_11_9d9d9d">인증번호를 다시 받으시려면 ‘새 비밀번호 등록’ 버튼을 클릭해주세요.</div>-->
+
+							<!-- 버튼 -->
+							<div class="cfmOllehBtnArea cfmOllehClear cfmOlleDefaultRightGrayMar">
+								<br><br><div class="cfmOllehRtBtn"><a href="javascript:cancle();"><img src="../images/new_pps/btn_cancel.gif" alt="취소" /></a></div>
+							</div>
+							<!--// 버튼 -->					
+
+						</div>
+						<!--// 오른쪽 영역 -->
+					</div>
+					<!--// Contents box -->
+
+					
+				</div>
+				<!--// 새 비밀번호 등록 컨텐츠 -->	
+			</div>
+			<!--// Contents -->
+		</div>
+		<!--// Olleh Contents -->	
+
+		<!-- footer -->
+
+		<!--// footer -->
+	</div>
+	<!--// ollehWrap -->
+</body>
+
+
+<script language="javascript" src="$link.getContextPath()/js/common.js"></script>
+<script language="javascript">
+<!--
+
+function init() {
+
+	var mf = document.memberForm;
+	
+	mf.userId.value		= "$!memberVo.userId";
+	mf.telNo.value		= "$!stringUtil.markPhoneNumber($!memberVo.telNo)";
+	mf.otpSeq.value		= "$!memberVo.otpSeq";
+	//mf.email.value		= "$!memberVo.email";
+
+}
+
+init();
+
+function sendSms() {
+
+	var mf = document.memberForm;
+	
+	mf.action = "https://pssoonm.kt.com/member/sendSms.do";
+	mf.method = "post";
+	mf.target = "_self";
+	mf.submit();
+
+}
+
+function confirm() {
+
+	var mf = document.memberForm;
+	
+	mf.action = "https://pssoonm.kt.com/member/confirm.do";
+	mf.method = "post";
+	mf.target = "_self";
+	mf.submit();
+
+}
+function cancle() {
+
+	location.href="$link.getContextPath()/login.do"
+}
+
+//-->
+</script>
+<iframe name="hiddenIFrame" src="" frameborder="0" height="0" width="100%">
+
+</iframe>

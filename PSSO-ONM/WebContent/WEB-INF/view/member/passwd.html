@@ -1,0 +1,187 @@
+<body class="bg_main">
+<form name="memberForm" method="post">			
+<p class="p1">&nbsp;&nbsp;
+비밀번호 변경일이 3개월 이상 경과 하였습니다.
+비밀번호를 변경 하셔야 로그인이 가능합니다.</br>
+&nbsp;&nbsp;&nbsp;아래에 새로운 비밀번호를 입력하여 주세요.
+</p>
+<p>&nbsp;&nbsp;※ 비밀번호는 8자 이상의 영문/숫자/특수문자 조합으로 입력하세요</p>
+					
+												<table class="passwd" align="center">
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															아이디
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+														<input type="text" name="userId" size="15" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															비밀번호
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="password" name="userPswd" size="15" autocomplete="off"/>
+															&nbsp;&nbsp;
+															※. 비밀번호는 8자 이상의 영문/숫자/특수문자 조합으로 입력하세요.
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															비밀번호
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="password" name="userPswd2" size="15" autocomplete="off"/>
+															&nbsp;&nbsp;
+															※. 비빌번호를 다시한번 입력하세요.
+														</td>
+													</tr>
+													</table>
+													<div style="padding: 10px 0 20px 0; text-align: center;">
+													<a href="javascript:void(submitForm())"><img src="$link.getContextPath()/images/button/btn_save.gif" border="0" /></a>
+													<input type="button" onclick ="javascript:reset()" value ="취소" style="width:65; height:27"/>	
+													</div>
+													
+													</form>
+													
+			
+
+
+<script language="javascript" src="$link.getContextPath()/js/common.js"></script>
+<script language="javascript">
+<!--
+document.memberForm.userId.focus();
+
+function init() {
+
+	var result = "$!result";
+	if( result == "true")
+	{
+		alert("성공적으로 저장하였습니다. 다시한번 로그인 해주세요.");
+		self.close();
+	}
+}
+
+
+
+function reset()
+{
+	alert("비밀번호를 변경하셔야 로그인이 됩니다.");
+	self.close();
+}
+
+function submitForm()
+{
+	var mf = document.memberForm;
+	
+	var userId = deleteSpace(mf.userId.value);
+	mf.userId.value = userId;
+	
+	var userPswd = deleteSpace(mf.userPswd.value);
+	mf.userPswd.value = userPswd;
+	
+	var userPswd2 = deleteSpace(mf.userPswd2.value);
+	mf.userPswd2.value = userPswd2;
+
+	if(checkNullEmpty(userId))
+	{
+		alert("아이디를 입력하세요.");
+		mf.userId.focus();
+		return;
+	}
+
+	if(checkNullEmpty(userPswd))
+	{
+		alert("비밀번호를 입력하세요.");
+		mf.userPswd.focus();
+		return;
+	}
+	
+	if(checkNullEmpty(userPswd2))
+	{
+		alert("비밀번호를 다시 한번 입력하세요.");
+		mf.userPswd.focus();
+		return;
+	}
+	
+
+	if(checkNullEmpty(userPswd) == false) {
+
+		if(!checkLengthBetween(userPswd, 8, 100))
+		{
+			alert("비밀번호는 8자 이상으로 입력하세요.");
+			mf.userPswd.focus();
+			return false;
+		}
+
+		if(userPswd == userId)
+		{
+			alert("비밀번호를 아이디와 다르게 입력하세요.");
+			mf.userPswd.focus();
+			return;
+		}
+
+		// 연속문자(1234.., abc..등)
+		if(!checkPwdAbc(userPswd)) {
+			alert("비밀번호에 연속된 문자는 허용되지 않습니다.");
+			mf.userPswd.focus();
+			return;
+		}
+
+		// 동일한 문자(aaa.., 111..등)
+		if(!checkPwdAaa(userPswd)) {
+			alert("비밀번호에 연속된 동일한 문자는 허용되지 않습니다.");
+			mf.userPswd.focus();
+			return;
+		}
+
+	}
+	
+	if(checkNullEmpty(userPswd2) == false) {
+	
+		if(!checkLengthBetween(userPswd2, 8, 100))
+		{
+			alert("비밀번호는 8자 이상으로 입력하세요.");
+			mf.userPswd2.focus();
+			return false;
+		}
+	
+		if(userPswd2 == userId)
+		{
+			alert("비밀번호를 아이디와 다르게 입력하세요.");
+			mf.userPswd2.focus();
+			return;
+		}
+	
+		// 연속문자(1234.., abc..등)
+		if(!checkPwdAbc(userPswd2)) {
+			alert("비밀번호에 연속된 문자는 허용되지 않습니다.");
+			mf.userPswd2.focus();
+			return;
+		}
+	
+		// 동일한 문자(aaa.., 111..등)
+		if(!checkPwdAaa(userPswd2)) {
+			alert("비밀번호에 연속된 동일한 문자는 허용되지 않습니다.");
+			mf.userPswd2.focus();
+			return;
+		}
+		
+		if(userPswd2 != userPswd)
+		{
+			alert("비밀번호가 일치 하지 않습니다. 확인하고 입력하세요.");
+			mf.userPswd2.focus();
+			return;
+		}
+	
+	}
+	mf.action = "$link.getContextPath()/member/mod.do";
+	mf.method = "post";
+	mf.target = "_self";
+	mf.submit();
+}
+init();
+//-->
+</script>
+
+</body>

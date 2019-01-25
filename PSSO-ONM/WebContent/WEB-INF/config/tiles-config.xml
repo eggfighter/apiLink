@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+
+	<!-- layout -->
+	<definition name="layout.noframe" template="/WEB-INF/view/layout/noframe.jsp"/>
+	<definition name="layout.noframe_otp" template="/WEB-INF/view/layout/noframe_otp.jsp"/>
+	<definition name="layout.blank" template="/WEB-INF/view/layout/blanzk.jsp"/>
+	
+	<definition name="layout.frame" template="/WEB-INF/view/layout/frame.jsp">
+		<put-attribute name="header" value="/WEB-INF/view/layout/header.html"/>
+		<put-attribute name="left" value="/WEB-INF/view/layout/left.html"/>
+		<put-attribute name="navibar" value="/WEB-INF/view/layout/navibar.html"/>
+	</definition>
+
+	<!-- common -->
+	<definition name="member.login" extends="layout.noframe">
+		<put-attribute name="body" value="/WEB-INF/view/member/login.html"/>
+	</definition>
+	<definition name="member.passwd" extends="layout.noframe">
+		<put-attribute name="body" value="/WEB-INF/view/member/passwd.html"/>
+	</definition>
+	<definition name="member.result" extends="layout.noframe">
+		<put-attribute name="body" value="/WEB-INF/view/member/result.html"/>
+	</definition>
+	<definition name="member.otp" extends="layout.noframe">
+		<put-attribute name="body" value="/WEB-INF/view/member/otp.html"/>
+	</definition>
+	<definition name="member.otpEmail" extends="layout.noframe_otp">
+		<put-attribute name="body" value="/WEB-INF/view/member/otp_email.html"/>
+	</definition>	
+	<definition name="member.msg" extends="layout.noframe">
+		<put-attribute name="body" value="/WEB-INF/view/member/referer.jsp"/>
+	</definition>
+		
+	<!--  error -->
+	<definition name="error" extends="layout.blank">
+		<put-attribute name="body" value="/WEB-INF/view/common/error.html" />
+	</definition>
+	<definition name="error403" extends="layout.blank">
+		<put-attribute name="body" value="/WEB-INF/view/common/error403.html" />
+	</definition>
+	<definition name="error404" extends="layout.blank">
+		<put-attribute name="body" value="/WEB-INF/view/common/error404.html" />
+	</definition>
+	<definition name="error500" extends="layout.blank">
+		<put-attribute name="body" value="/WEB-INF/view/common/error500.html" />
+	</definition>
+	<definition name="error.bind" extends="layout.blank">
+		<put-attribute name="body" value="/WEB-INF/view/common/errorBind.html" />
+	</definition>
+
+	<!-- admin/member -->
+	<definition name="admin.member.list" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/admin/member/list.html"/>
+	</definition>
+	<definition name="admin.member.view" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/admin/member/view.html"/>
+	</definition>
+	<definition name="admin.member.form" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/admin/member/form.html"/>
+	</definition>
+	<definition name="admin.member.result" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/admin/member/result.html"/>
+	</definition>
+	<!-- admin/connstat -->
+	<definition name="admin.connstat.view" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/admin/connstat/view.html"/>
+	</definition>
+	
+	<!-- admin/config -->
+	<definition name="admin.config.view" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/admin/config/view.html"/>
+	</definition>
+	
+	<!-- admin/eventlog -->
+	<definition name="admin.eventlog.list" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/admin/eventlog/list.html"/>
+	</definition>
+	<definition name="admin.eventlog.view" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/admin/eventlog/view.html"/>
+	</definition>
+
+	<!-- admin/scheduler -->
+	<definition name="admin.scheduler.view" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/admin/scheduler/view.html"/>
+	</definition>
+
+	<!-- customer -->
+	<definition name="customer.list" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/customer/list.html"/>
+	</definition>
+	<definition name="customer.view" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/customer/view.html"/>
+	</definition>
+	<definition name="customer.form" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/customer/form.html"/>
+	</definition>
+	<definition name="customer.result" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/customer/result.html"/>
+	</definition>
+	<definition name="customer.reset" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/customer/reset.html"/>
+	</definition>
+	
+	<!-- seceder -->
+	<definition name="seceder.list" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/seceder/list.html"/>
+	</definition>
+
+	<!-- custom14 -->
+	<definition name="custom14.list" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/custom14/list.html"/>
+	</definition>
+	<definition name="custom14.view" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/custom14/view.html"/>
+	</definition>
+	<definition name="custom14.form" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/custom14/form.html"/>
+	</definition>
+	<definition name="custom14.result" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/custom14/result.html"/>
+	</definition>
+
+	<!-- eventstat -->
+	<definition name="eventstat.time.list" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/eventstat/time/list.html"/>
+	</definition>
+	<definition name="eventstat.site.list" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/eventstat/site/list.html"/>
+	</definition>
+
+
+	<!-- admin/terms/version -->
+	<definition name="admin.terms.version.list" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/admin/terms/version/list.html"/>
+	</definition>
+	<definition name="admin.terms.version.form" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/admin/terms/version/form.html"/>
+	</definition>
+	<definition name="admin.terms.version.result" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/admin/terms/version/result.html"/>
+	</definition>
+	
+	<!-- restore 
+	<definition name="restore.list" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/restore/list.html"/>
+	</definition>
+	<definition name="restore.result" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/restore/result.html"/>
+	</definition>
+	-->
+	<!-- chkNum -->
+	<definition name="chkNum.list" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/chkNum/list.html"/>
+	</definition>
+	
+	<!-- authcheck -->
+	<definition name="authstat.time.list" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/authstat/time/list.html"/>
+	</definition>
+	<definition name="authstat.site.list" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/authstat/site/list.html"/>
+	</definition>
+	
+	<!-- authcheck -->
+	<definition name="authcheck.list" extends="layout.frame">
+		<put-attribute name="body" value="/WEB-INF/view/authcheck/list.html"/>
+	</definition>
+
+	<!-- test -->
+	<definition name="hello" template="/WEB-INF/view/hello.jsp"/>
+
+</tiles-definitions>

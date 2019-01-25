@@ -1,0 +1,191 @@
+#set( $titleImage = $link.getContextPath() + "/images/sub/cm/title_cm_" + $menu.getPathKey() + ".gif" )
+
+						<form name="searchForm" method="get">
+						<input type="hidden" name="version" />
+						<input type="hidden" name="pPageNo" />
+						<input type="hidden" name="pPageCount" />
+						<div class="cs">
+							<div class="cs-search"><img src="$titleImage" border="0" /></div>
+						</div>
+						</form>
+						<div class="cs-result">
+							<table cellspacing="0" cellpadding="0" border="0" width="100%">
+								<tr>
+									<td bgcolor="#b5b5b5" colspan="3">
+										<table cellspacing="1" cellpadding="2" border="0" width="100%" style="height: 24px">
+											<tr bgcolor="#FFFFFF" align="center">
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="35%">버전</td>
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="35%">등록일</td>
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="30%">삭제하기</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<!--// 가이드 TR // -->
+									<td width="35%" height="1"></td>
+									<td width="35%"></td>
+									<td width="30%"></td>
+								</tr>
+#if( $listTermsVersion.size() == 0 )
+								<tr>
+									<td colspan="3" align="center" class="text-result-no">검색 결과 데이터가 존재하지 않습니다.</td>
+								</tr>
+#else
+	#foreach ($termsVersion in $listTermsVersion)
+								<tr class="text-result">
+									<td>$!termsVersion.version</td>
+									<td>$!termsVersion.regdate</td>
+									<td>
+										<a href="javascript:del('$!termsVersion.version')">[삭제하기]</a>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3" background="$link.getContextPath()/images/sub/default/dot_line.gif"><img
+										src="$link.getContextPath()/images/sub/default/dot_line.gif" border="0" /></td>
+								</tr>
+	#end
+#end
+								<tr height="50px">
+									<td colspan="3" align="center">
+										<!-- Paging Start -->
+<script type="text/javascript">
+<!--
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+MM_preloadImages();
+//-->
+</script>
+<script language="javascript">
+<!--
+function go(p) {
+	var sf = document.searchForm;
+	sf.pPageNo.value = p;
+	sf.action = "$link.getContextPath()/in/terms/version/list.do";
+	sf.target = "_self";
+	sf.submit();
+}
+//-->
+</script>
+
+#if( "$!paging.getFirst()" == "" )
+										<img src="$link.getContextPath()/images/sub/default/pz_le.gif" name="pz_one" width="11" height="9" border="0" id="pz_one" />&nbsp;
+#else
+										<a href="javascript:go($paging.getFirst())" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('pz_one','','$link.getContextPath()/images/sub/default/pz_le_on.gif',1)"><img 
+											src="$link.getContextPath()/images/sub/default/pz_le.gif" name="pz_one" width="11" height="9" border="0" id="pz_one" /></a>&nbsp;
+#end
+
+#if( "$!paging.getPrev()" == "" )
+										<img src="$link.getContextPath()/images/sub/default/pz_le2.gif" alt="앞으로" name="pz_two" width="11" height="9" border="0" id="pz_two" />
+#else
+										<a href="javascript:go($paging.getPrev())" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('pz_two','','$link.getContextPath()/images/sub/default/pz_le2_on.gif',1)"><img
+											src="$link.getContextPath()/images/sub/default/pz_le2.gif" alt="앞으로" name="pz_two" width="11" height="9" border="0" id="pz_two" /></a>
+#end
+										&nbsp;&nbsp;
+
+#if( "$!params.pPageNo" == "" )
+	#set( $pn = "1" )
+#else
+	#set( $pn = $!params.pPageNo )
+#end
+										
+#foreach( $p in $paging.getPages() )
+	#if( $p == $pn )
+										<span class="no_on_over">$p</span><a>
+	#else
+										<a href="javascript:go($p)" class="no_on">$p</a>
+	#end
+#end
+										&nbsp;&nbsp;
+#if( "$!paging.getNext()" == "" )
+										<img src="$link.getContextPath()/images/sub/default/pz_rg2.gif" alt="뒤로" name="pz_three" width="11" height="9" border="0" id="pz_three" />&nbsp;
+#else
+										<a href="javascript:go($paging.getNext())" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('pz_three','','$link.getContextPath()/images/sub/default/pz_rg2_on.gif',1)"><img 
+											src="$link.getContextPath()/images/sub/default/pz_rg2.gif" alt="뒤로" name="pz_three" width="11" height="9" border="0" id="pz_three" /></a>&nbsp;
+#end
+
+#if( "$!paging.getLast()" == "" )
+										<img src="$link.getContextPath()/images/sub/default/pz_rg.gif" alt="끝으로" name="pz_four" width="11" height="9" border="0" id="pz_four" />
+#else
+										<a href="javascript:go($paging.getLast())" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('pz_four','','$link.getContextPath()/images/sub/default/pz_rg_on.gif',1)"><img 
+											src="$link.getContextPath()/images/sub/default/pz_rg.gif" alt="끝으로" name="pz_four" width="11" height="9" border="0" id="pz_four" /></a>
+#end
+										<!-- Paging End -->
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div style="width: 100%; height: 40px; padding-top: 10px; text-align: center; ">
+							<a href="javascript:addForm()"><img src="$link.getContextPath()/images/button/btn_add.gif" border="0" /></a><br>
+						</div>
+						<div class="alret">
+							<p class="orange-bold">Tip. 검색을 이용하시는 방법</p>
+							<p class="pad20">
+								- 하단 페이지 번호를 클릭하여 이동하세요.
+							</p>
+						</div>
+
+<script language="javascript">
+<!--
+function addForm() {
+	document.searchForm.action = "$link.getContextPath()/in/terms/version/form.do";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function del(key) {
+	if (confirm('정말 삭제하시겠습니까?') == false) return;
+	document.searchForm.version.value = key;
+	document.searchForm.action = "$link.getContextPath()/in/terms/version/del.do";
+	document.searchForm.method = "post";
+	document.searchForm.target = "hiddenIFrame";
+	document.searchForm.submit();
+}
+
+function search() {
+	var sf = document.searchForm;
+	sf.pPageNo.value = "1";
+	sf.action = "$link.getContextPath()/in/terms/version/list.do";
+	sf.target = "_self";
+	sf.submit();
+}
+
+function initSearch() {
+	var sf = document.searchForm;
+	
+#if( "$!params.pPageNo" == "" )
+	sf.pPageNo.value	= 1;
+#else
+	sf.pPageNo.value	= "$!params.pPageNo";
+#end
+#if( "$!params.pPageCount" == "" )
+	sf.pPageCount.value	= 20;
+#else
+	sf.pPageCount.value	= "$!params.pPageCount";
+#end
+}
+
+initSearch();
+
+//-->
+</script>
+<iframe name="hiddenIFrame" src="" frameborder="0" height="0" width="100%"></iframe>

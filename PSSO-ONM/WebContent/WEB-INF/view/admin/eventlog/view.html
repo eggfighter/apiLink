@@ -1,0 +1,162 @@
+#set( $titleImage = $link.getContextPath() + "/images/sub/cm/title_cm_" + $menu.getPathKey() + ".gif" )
+
+						<form name="searchForm" method="get">
+						<input type="hidden" name="pEditorId" />
+						<input type="hidden" name="pUserId" />
+						<input type="hidden" name="pPageNo" />
+						<input type="hidden" name="pPageCount" />
+						<input type="hidden" name="seq" />
+						<div class="cs">
+							<div class="cs-search"><img src="$titleImage" border="0" /></div>
+						</div>
+						</form>
+
+						<div class="list_detail">
+							<center>
+								<div class="box-noheight">
+									<table width="800px" border="0" cellspacing="0" cellpadding="0" align="center">
+										<tr height="25px">
+											<td bgcolor="#d6d6d6">
+												<table width="800" border="0" cellspacing="1" cellpadding="1">
+													<tr height="45">
+														<td width="40%" class="tt">항목명</td>
+														<td width="60%" class="tt">항목값</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															번호
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!eventLogVo.seq
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															작업자아이디
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!eventLogVo.editorId
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															사용자아이디
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!eventLogVo.userId
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															처리분류
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!operations.get($!eventLogVo.operation)
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															갱신목록
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!eventLogVo.fieldname
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															변경전 값
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!eventLogVo.before
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															변경후 값
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!eventLogVo.after
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															변경사유
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$stringUtil.setHTML($!eventLogVo.reason)
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															변경URL
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!eventLogVo.url
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															변경시간
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!eventLogVo.time
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															변경IP
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!eventLogVo.ip
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															입력시간
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!eventLogVo.regdate
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</center>
+						</div>
+						<div style="padding: 10px 0 20px 0; text-align: center;">
+							<a href="javascript:list()"><img src="$link.getContextPath()/images/button/btn_list.gif" border="0" /></a>
+						</div>
+						<div class="alret">
+							<p class="orange-bold">Tip. 중요공지</p>
+							<p class="pad20">
+								- 목록보기를 클릭하시면 이전화면으로 돌아갑니다. 
+							</p>
+						</div>
+
+<script language="javascript">
+<!--
+
+function list()
+{
+	document.searchForm.seq.value = "";
+	document.searchForm.action = "$link.getContextPath()/in/eventlog/list.do";
+	document.searchForm.method = "get";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function init() {
+	// init search parameters
+	var sf = document.searchForm;
+	sf.pEditorId.value	= "$!params.pEditorId";
+	sf.pUserId.value	= "$!params.pUserId";
+	sf.pPageNo.value	= "$!params.pPageNo";
+	sf.pPageCount.value	= "$!params.pPageCount";
+}
+
+init();
+
+//-->
+</script>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="member">
+	
+	<resultMap id="memberResultMap" type="MemberVo">
+		<id property="userId" column="USER_ID"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userPswd" column="USER_PSWD"/>
+		<result property="telNo" column="TEL_NO"/>
+		<result property="email" column="EMAIL"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="userType" column="USER_TYPE"/>
+		<result property="useFlag" column="USE_FLAG"/>
+		<result property="userDesc" column="USER_DESC"/>
+		<result property="regDate" column="REG_DATE"/>
+		<result property="updtDate" column="UPDT_DATE"/>
+		<result property="userHost" column="USER_HOST"/>
+		<result property="pswdUpdtDate" column="PSWD_UPDT_DATE"/>
+		<result property="logTrialCnt" column="LOG_TRIAL_CNT" jdbcType="INTEGER"/>
+		<result property="logIndc" column="LOG_INDC"/>
+		<result property="authCode" column="AUTH_CODE" />
+		<result property="delYn" column="DEL_YN" />
+		<result property="connIp" column="CONN_IP" />
+		<result property="otpSeq" column="OTP_SEQ" />
+		<result property="otpVerfNo" column="OTP_VERF_NO" />
+		<result property="sendDiv" column="SEND_DIV" />
+		<result property="mobile1" column="OBJR_MOBP_NO1" />
+		<result property="mobile2" column="OBJR_MOBP_NO2" />
+		<result property="mobile3" column="OBJR_MOBP_NO3" />
+		<result property="lastLogin" column="LASTLOGIN" />
+		<result property="contractnum" column="CONTRACTNUM" />
+	</resultMap>
+	
+	
+	<select id="listMember" parameterType="SearchVo" resultMap="memberResultMap">
+		SELECT USER_ID
+		     , PSSO.UF_GET_USER_NAME(USER_ID) AS USER_NAME
+		     , USER_EMAIL as EMAIL, AUTH_CODE
+		     , PSSO.UF_GET_AUTH_NAME(LINK_APPL_SEQ, AUTH_CODE) AS USER_TYPE
+		     , REG_DTTM as REG_DATE
+		     , UPD_DTTM as UPDT_DATE
+		     , CONN_IP AS USER_HOST , DEL_YN
+		     , USER_MAC_ADDR AS USER_MAC_ADDRESS 
+		FROM TB_USER_LINK_AUTH_MAP
+		WHERE LINK_APPL_SEQ = 2
+    	<if test="pId != null and pId != ''">and USER_ID = #{pId}</if>
+    	<if test="pName != null and pName != ''">and PSSO.UF_GET_USER_NAME(USER_ID)  = #{pName}</if>
+    	<if test="pTel != null and pTel != ''">and TEL_NO = #{pTel}</if>
+    	order by USER_ID asc
+	</select>
+	
+	<select id="countMember" parameterType="SearchVo" resultType="int">
+		select count(*) as CNT
+    	from TB_USER_LINK_AUTH_MAP
+    	WHERE LINK_APPL_SEQ = 2
+    	<if test="pId != null and pId != ''">and USER_ID = #{pId}</if>
+    	<if test="pName != null and pName != ''">and PSSO.UF_GET_USER_NAME(USER_ID) = #{pName}</if>
+    	<if test="pTel != null and pTel != ''">and TEL_NO = #{pTel}</if>
+	</select>
+	<select id="getMember" parameterType="String" resultMap="memberResultMap">
+		SELECT a.CN AS USER_ID
+		     , a.DISPLAYNAME AS USER_NAME
+		     , a.USER_PW_256 AS USER_PSWD
+		     , a.MOBILE AS TEL_NO
+		     ,case when charindex('@', a.OTHERM) >=4 then substring( a.OTHERM,1,charindex('@',a.OTHERM)-4) +'***' + substring(a.OTHERM,charindex('@',a.OTHERM),len(a.OTHERM)) 
+			   else '***'end as  OTHERM 
+		     , a.OTHERM AS EMAIL
+		     , '' AS ADDRESS
+		     , b.LINK_AUTH_CODE AS USER_TYPE
+		     , c.AUTH_CODE AS AUTH_CODE
+		     , CASE WHEN c.DEL_YN = 'Y' THEN '0' ELSE '1' END AS USE_FLAG
+		     , c.DEL_YN AS DEL_YN
+		     , '' AS USER_DESC
+		     , c.REG_DTTM as REG_DATE
+		     , c.UPD_DTTM as UPDT_DATE
+		     , c.CONN_IP AS USER_HOST
+		     , PWDUPDATETIME as PSWD_UPDT_DATE
+		     , a.FAILCHECK AS LOG_TRIAL_CNT
+		     , c.USER_MAC_ADDR AS USER_MAC_ADDRESS 
+		     , a.LASTLOGIN as LASTLOGIN
+		     , a.CONTRACTNUM AS CONTRACTNUM
+		FROM PORTALUSER a, TB_LINK_AUTH_INFO b, TB_USER_LINK_AUTH_MAP c
+		WHERE a.CN = c.USER_ID
+		AND b.LINK_APPL_SEQ = c.LINK_APPL_SEQ
+		AND b.AUTH_CODE = c.AUTH_CODE
+		AND b.LINK_APPL_SEQ = 2
+		AND a.CN = #{userId}
+	</select>
+	
+	<insert id="insertMember" parameterType="MemberVo">
+		insert into ONM_USER (
+			USER_ID, USER_NAME, USER_PSWD
+		  , TEL_NO, EMAIL, ADDRESS
+		  , USER_TYPE, USE_FLAG, USER_DESC
+		  , REG_DATE, UPDT_DATE, USER_HOST
+		  , PSWD_UPDT_DATE, LOG_TRIAL_CNT, USER_MAC_ADDRESS
+		) values (
+			#{userId}, #{userName}, #{userPswd}
+		  , #{telNo}, #{email}, #{address}
+		  , #{userType}, #{useFlag}, #{userDesc}
+		  , CONVERT(varchar(19),GETDATE(),121)
+		  , null
+		  , #{userHost}
+		  , CONVERT(varchar(19),GETDATE(),121), null, #{userMacAddress}
+		)
+	</insert>
+	
+	<insert id="insertSendHist" parameterType="MemberVo">
+		INSERT INTO TB_SEND_HIST (
+			SEND_SEQ, BUSI_DIV, SEND_OBJ_KEY
+			, SEND_DIV, LINK_URL, MAKR_ID, OBJR_ID
+			, OBJR_MOBP_NO1, OBJR_MOBP_NO2
+			, OBJR_MOBP_NO3, DEL_YN, REG_DTTM, REGR_ID
+			, UPD_DTTM, UPDR_ID
+			) VALUES(
+				SEQ_SEND_HIST.NEXTVAL, '030',#{otpSeq, jdbcType=VARCHAR}, #{sendDiv, jdbcType=VARCHAR}
+				, 'https://pssoonm.kt.com', #{userId}, #{userId, jdbcType=VARCHAR}
+				, #{mobile1, jdbcType=VARCHAR}, #{mobile2, jdbcType=VARCHAR}, #{mobile3, jdbcType=VARCHAR}, 'N'
+				, CONVERT(varchar(19),GETDATE(),121), #{userId, jdbcType=VARCHAR}, CONVERT(varchar(19),GETDATE(),121), #{userId, jdbcType=VARCHAR}
+			)
+	</insert>
+	
+	<update id="updateMember" parameterType="MemberVo">
+		update TB_USER_LINK_AUTH_MAP SET
+		<if test="userHost != null and userHost != ''">
+		  	CONN_IP       = #{userHost}
+		 </if>
+		 <if test="authCode != null and authCode != ''">
+		  	, AUTH_CODE       = #{authCode}
+		 </if>
+		 <if test="useFlag != null and useFlag != ''">
+		  	, DEL_YN       = #{useFlag}
+		 </if>
+		where USER_ID = #{userId}
+	</update>
+	
+	 <!--
+	<update id="updateMember" parameterType="MemberVo">
+		update ONM_USER set
+		    USER_NAME       = #{userName}
+		<if test="userPswd != null and userPswd != ''">
+		  , USER_PSWD       = #{userPswd}
+		</if>
+		<if test="pswdUpdtDate != null">
+		  , PSWD_UPDT_DATE  = current_timestamp
+		</if>
+		  , TEL_NO          = #{telNo}
+		  , EMAIL           = #{email}
+		  , ADDRESS         = #{address}
+		  , USER_TYPE       = #{userType}
+		  , USE_FLAG        = #{useFlag}
+		<if test='useFlag != null and useFlag == "1"'>
+		  , LOG_TRIAL_CNT   = null 
+		</if>
+		  , USER_DESC       = #{userDesc}
+		  , UPDT_DATE       = current_timestamp
+		  , USER_HOST       = #{userHost}
+		  , USER_MAC_ADDRESS = #{userMacAddress}
+		where USER_ID = #{userId}
+	</update>
+	 -->
+	 
+	 <update id="updatePswd" parameterType="MemberVo">
+		update ONM_USER set
+		   USER_PSWD       = #{userPswd}
+		 , PSWD_UPDT_DATE  = CONVERT(varchar(19),GETDATE(),121)
+		 , USE_FLAG        = #{useFlag}
+		 where USER_ID = #{userId}
+	</update>
+	
+	<delete id="deleteMember" parameterType="MemberVo">
+		delete from ONM_USER 
+		where USER_ID = #{userId}
+	</delete>
+	
+	<insert id="insertUserChngHist" parameterType="MemberVo">	 
+		insert into TB_USER_CHNG_HIST (CHNG_DIV,CHNG_DTTM,USER_ID,USER_NAME,USER_EMAIL,USER_MOBP) 
+			select #{chgFlag},CONVERT(varchar(19),GETDATE(),121),CN,DISPLAYNAME , OTHERM , MOBILE from PORTALUSER
+			where cn=#{userId}
+	</insert>
+	<update id="increaseTrialCnt" parameterType="string">
+		update PORTALUSER set
+		    FAILCHECK = ISNULL(FAILCHECK, 0) + 1
+		where CN = #{userId}
+	</update>
+
+	<update id="resetTrialCnt" parameterType="string">
+		update PORTALUSER set
+		    FAILCHECK = null
+		where CN = #{userId}
+	</update>
+
+	<update id="updateUseFlagFalse" parameterType="string">
+		update TB_USER_LINK_AUTH_MAP set
+		    DEL_YN = 'Y'
+		where USER_ID = #{userId}
+	</update>
+	
+	<select id="getOtpSeq" parameterType="String" resultMap="memberResultMap">
+		SELECT UF_OTP_GRTE(#{userId}) AS OTP_SEQ FROM DUAL
+		<!-- {call UP_OTP_GRTE(?, ?, ?, ?)} -->
+	</select>
+	
+	<select id="getOtpVerfNo" parameterType="String" resultMap="memberResultMap">
+		SELECT OTP_VERF_NO FROM TB_OTP_CRTE WHERE OTP_SEQ = #{otpSeq}
+	</select>
+</mapper>

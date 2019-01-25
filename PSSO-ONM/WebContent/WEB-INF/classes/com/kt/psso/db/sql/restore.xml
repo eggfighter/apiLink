@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="restore">
+	
+	<resultMap id="restoreResultMap" type="RestoreVo">
+		<result property="cn" column="CN"/>
+		<result property="displayname" column="DISPLAYNAME"/>
+		<result property="mobile" column="MOBILE"/>
+		<result property="regdate" column="REGDATE"/>
+		<result property="regip" column="REGIP"/>
+		<result property="kpm" column="KPM"/>
+	</resultMap>
+	
+	<select id="listRestore" parameterType="SearchVo" resultMap="restoreResultMap">
+		select CN
+		     , DISPLAYNAME
+		     , MOBILE
+		     , REGDATE
+		     , REGIP
+		     , KPM
+		from PORTALUSER_BACKUP
+		where 1=1
+    	<if test="pCn != null and pCn != ''">and UPPER(CN) = UPPER(#{pCn})</if>
+	</select>
+
+</mapper>

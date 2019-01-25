@@ -1,0 +1,145 @@
+<script language="javascript">
+<!--
+function setIcon(obj, flag) {
+	if (flag) {
+		var url = "$link.getContextPath()/images/ico/ico_" + obj.id + ".gif";
+		obj.style.background = "url(" + url + ") no-repeat"; 
+	} else {
+		obj.style.background = "";
+	}
+}
+onload = function() {
+	var obj;
+	obj = document.getElementById("webid");
+	if (obj.value == '') setIcon(obj, true);
+	obj = document.getElementById("webjumin");
+	if (obj.value == '') setIcon(obj, true);
+	obj = document.getElementById("webdate");
+	if (obj.value == '') setIcon(obj, true);
+}
+//-->
+</script>
+
+#set( $titleImage = $link.getContextPath() + "/images/sub/cm/title_cm_" + $menu.getPathKey() + ".gif" )
+
+						<form name="searchForm" method="post">
+						<input type="hidden" name="cn" />
+						<div class="cs">
+							<div class="cs-search"><img src="$titleImage" border="0" /></div>
+							<div class="cs-search"><input name="pCn" type="text" id="webid" class="webid" tabindex="1"
+								onfocus="this.className='webid webidOn'; setIcon(this, false);"
+								onblur="this.className='webid'; if (this.value == '') setIcon(this, true);"
+								onkeypress="if (event.keyCode == 13) search();"
+								/></div>
+							<div class="cs-search"><input name="pRrn7" type="password" id="webjumin" class="webjumin" tabindex="2"
+								onfocus="this.className='webjumin webjuminOn'; setIcon(this, false);"
+								onblur="this.className='webjumin'; if (this.value == '') setIcon(this, true);"
+								onkeypress="if (event.keyCode == 13) search();"
+								autocomplete="off"/>
+							</div>
+							<div class="cs-search"><input name="pDate" type="text" id="webdate" class="webjumin" tabindex="3"
+							onfocus="this.className='webjumin webjuminOn'; setIcon(this, false);"
+							onblur="this.className='webjumin'; if (this.value == '') setIcon(this, true);"
+							onkeypress="if (event.keyCode == 13) search();"
+							/></div>
+							<div class="cs-search"><input type="image" onClick="javascript:search()" src="$link.getContextPath()/images/sub/cm/btn_serach.gif" tabindex="4" border="0"  formmethod="post"/><!-- a href="javascript:search()"><img src="$link.getContextPath()/images/sub/cm/btn_serach.gif" tabindex="3" border="0" /></a> --></div>
+							 <div>전체 : $count 명 </div>
+						</div>
+						</form>
+						<div class="cs-result">
+							<table cellspacing="0" cellpadding="0" border="0" width="100%">
+								<tr>
+									<td bgcolor="#b5b5b5" colspan="9">
+										<table cellspacing="1" cellpadding="2" border="0" width="100%" style="height: 24px">
+											<tr bgcolor="#FFFFFF" align="center">
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="12%">사용자 ID</td>
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="15%">한글이름</td>
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="12%">핸드폰번호</td>
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="25%">가입경로</td>
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="23%">가입일시</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<!--// 가이드 TR // -->
+									<td width="12%" height="1"></td>
+									<td width="15%"></td>
+									<td width="12%"></td>
+									<td width="25%"></td>
+									<td width="23%"></td>
+								</tr>
+
+#if( $listCustom14.size() == 0 || $count == "" )
+								<tr>
+									<td colspan="7" align="center" class="text-result-no">검색 결과 데이터가 존재하지 않습니다.</td>
+								</tr>
+#else
+	#foreach ($custom14 in $listCustom14)
+								<tr class="text-result">
+		#if( $authUtil.hasAuthority($session, "ROLE_SUPERVISOR") 
+		  || $authUtil.hasAuthority($session, "ROLE_USERALL")
+		  || $authUtil.hasAuthority($session, "ROLE_USERWRITE") )
+									<td><a href="javascript:modForm('$custom14.cn')" onfocus="blur()">$custom14.cn</a></td>
+		#else
+									<td>$custom14.cn</td>
+		#end
+									<td>$!custom14.displayname</td>
+									<td>$!stringUtil.markPhoneNumber($!customer.mobile)</td>
+									<td>$!custom14.regip</td>
+									<td>$!custom14.regdate</td>
+								</tr>
+								<tr>
+									<td colspan="9" background="$link.getContextPath()/images/sub/default/dot_line.gif"><img
+										src="$link.getContextPath()/images/sub/default/dot_line.gif" border="0" /></td>
+								</tr>
+	#end
+#end
+							</table>
+						</div>
+						<div class="alret">
+							<p class="orange-bold">Tip. 검색을 이용하시는 방법</p>
+							<p class="pad20">
+								- 상단의 아이디, 주민번호 앞 7자리, 변경일자를 입력하여 검색하세요.
+							</p>
+						</div>
+
+<script language="javascript" src="$link.getContextPath()/js/common.js"></script>
+<script language="javascript">
+<!--
+function modForm(cn) {
+	document.searchForm.cn.value = cn;
+	document.searchForm.action = "$link.getContextPath()/custom14/view.do";
+	document.searchForm.method = "get";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function search() {
+	var regdate = document.searchForm.pDate.value
+	
+	if (regdate != "" ){
+		if(!checkLengthBetween(regdate, 7, 8))
+		{
+			alert("가입일자를 확인하시고 다시 입력해 주세요."
+					+" 가입일자는 ex) 20120101  형식으로 입력해 주세요.");
+			mf.regdate.focus();
+			return false;
+		}
+	}
+	document.searchForm.cn.value = "";
+	document.searchForm.action = "$link.getContextPath()/custom14/list.do";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function initSearch() {
+	document.searchForm.pCn.value	= "$!params.pCn";
+	document.searchForm.pRrn7.value	= "$!params.pRrn7";
+	document.searchForm.pDate.value	= "$!params.pDate";
+}
+
+initSearch();
+
+//-->
+</script>

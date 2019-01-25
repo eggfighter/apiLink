@@ -1,0 +1,110 @@
+<script language="javascript">
+<!--
+function setIcon(obj, flag) {
+	if (flag) {
+		var url = "$link.getContextPath()/images/ico/ico_" + obj.id + ".gif";
+		obj.style.background = "url(" + url + ") no-repeat"; 
+	} else {
+		obj.style.background = "";
+	}
+}
+onload = function() {
+	var obj;
+	obj = document.getElementById("webid");
+	if (obj.value == '') setIcon(obj, true);
+}
+//-->
+</script>
+
+#set( $titleImage = $link.getContextPath() + "/images/sub/cm/title_cm_" + $menu.getPathKey() + ".gif" )
+
+						<form name="searchForm" method="get">
+						<input type="hidden" name="cn" />
+						<div class="cs">
+							<div class="cs-search"><img src="$titleImage" border="0" /></div>
+							<div class="cs-search"><select name="pDateFlag" tabindex="1">
+									<option value="1">공인인증서</option>
+									<option value="2">신용카드</option>
+									<option value="3">아이핀</option>
+									<option value="4">이메일</option>
+									<option value="5">핸드폰</option>
+								</select></div>
+							<div class="cs-search"><input name="pCn"  type="text" id="webid" class="webid" tabindex="3"
+								onfocus="this.className='webid webidOn'; setIcon(this, false);"
+								onblur="this.className='webid'; if (this.value == '') setIcon(this, true);"
+								onkeypress="if (event.keyCode == 13) search();"
+								/></div>
+							<div class="cs-search"><a href="javascript:search()"><img src="$link.getContextPath()/images/sub/cm/btn_serach.gif" tabindex="4" border="0" /></a></div>
+						</div>
+						</form>
+						<div class="cs-result">
+							<table cellspacing="0" cellpadding="0" border="0" width="100%">
+								<tr>
+									<td bgcolor="#b5b5b5" colspan="10">
+										<table cellspacing="1" cellpadding="2" border="0" width="100%" style="height: 24px">
+											<tr bgcolor="#FFFFFF" align="center">
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="20%">인증 여부</td>
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="15%">아이디</td>
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="15%">이름</td>
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="25%">이메일</td>
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="25%">인증 일시</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<!--// 가이드 TR // -->
+									<td width="20%" height="1"></td>
+									<td width="15%"></td>
+									<td width="15%"></td>
+									<td width="25%"></td>
+									<td width="25%"></td>
+								</tr>
+
+#if( $listAuthCheck.size() == 0 )
+								<tr>
+									<td colspan="9" align="center" class="text-result-no">검색 결과 데이터가 존재하지 않습니다.</td>
+								</tr>
+#else
+	#foreach ($authCheck in $listAuthCheck)
+								<tr class="text-result">
+									<td>$!authCheck.event_type</td>
+									<td>$!authCheck.cn</td>
+									<td>$!authCheck.displayname</td>
+									<td>$!authCheck.otherm</td>
+									<td>$!authCheck.timeslice</td>
+								</tr>
+								<tr>
+									<td colspan="10" background="$link.getContextPath()/images/sub/default/dot_line.gif"><img
+										src="$link.getContextPath()/images/sub/default/dot_line.gif" border="0" /></td>
+								</tr>
+	#end
+#end
+							</table>
+						</div>
+						<div class="alret">
+							<p class="orange-bold">Tip. 검색을 이용하시는 방법</p>
+							<p class="pad20">
+								- 상단의 인증 방법을 선택하고 아이디를 입력하여 검색하세요.
+							</p>
+						</div>
+
+<script language="javascript">
+<!--
+function search() {
+	document.searchForm.action = "$link.getContextPath()/authcheck/list.do";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function initSearch() {
+#if( "$!params.pDateFlag" != "" )
+	document.searchForm.pDateFlag.value	= "$!params.pDateFlag";
+#end
+	document.searchForm.pCn.value		= "$!params.pCn";
+}
+
+initSearch();
+
+//-->
+</script>

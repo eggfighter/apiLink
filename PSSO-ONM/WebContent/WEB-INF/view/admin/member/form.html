@@ -1,0 +1,243 @@
+#set( $titleImage = $link.getContextPath() + "/images/sub/cm/title_cm_" + $menu.getPathKey() + ".gif" )
+
+						<form name="searchForm" method="get">
+						<input type="hidden" name="pId" />
+						<input type="hidden" name="pName" />
+						<input type="hidden" name="pTel" />
+						<input type="hidden" name="pPageNo" />
+						<input type="hidden" name="pPageCount" />
+						<input type="hidden" name="userId" />
+						<div class="cs">
+							<div class="cs-search"><img src="$titleImage" border="0" /></div>
+						</div>
+						</form>
+
+						<form name="memberForm" method="post">
+						<input type="hidden" name="oldCn" />
+						<div class="list_detail">
+							<center>
+								<div class="box-noheight">
+									<table width="800px" border="0" cellspacing="0" cellpadding="0" align="center">
+										<tr height="25px">
+											<td bgcolor="#d6d6d6">
+												<table width="800" border="0" cellspacing="1" cellpadding="1">
+													<tr height="45">
+														<td width="40%" class="tt">항목명</td>
+														<td width="60%" class="tt">항목값</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															아이디
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="userId" size="15" />
+															&nbsp;&nbsp;
+															※. 아이디는 영문소문자/숫자로 입력하세요.
+														</td>
+													</tr>
+													<!-- 
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															비밀번호
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="password" name="userPswd" size="15" />
+															&nbsp;&nbsp;
+															※. 비밀번호는 8자 이상의 영문/숫자/특수문자 조합으로 입력하세요.
+														</td>
+													</tr>
+													 -->
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															이름
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="userName" size="10" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															연락처
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="telNo" size="20" />
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															이메일
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="email" size="30" />
+														</td>
+													</tr>
+													<!-- 
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															주소
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="address" size="80" />
+														</td>
+													</tr>
+													 -->
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															사용자유형
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<select name="authCode">
+																<option value="010">사용자(읽기)</option>
+																<option value="030">사용자(변경)</option>
+																<option value="050">사용자(고급변경)</option>
+																<option value="090">관리자</option>
+															</select>
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															로그인허용
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<select name="useFlag">
+																<option value="Y">허용안함</option>
+																<option value="N">허용함</option>
+															</select>
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															접근아이피
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="userHost" size="50" />
+															<br>
+															※. 다중 등록시 쉼표(,)로 구분지어 입력하세요.
+														</td>
+													</tr>
+												</table>
+												
+												<input type="hidden" name="userMacAddress" />
+												
+											</td>
+										</tr>
+									</table>
+								</div>
+							</center>
+						</div>
+						<div style="padding: 10px 0 20px 0; text-align: center;">
+							<a href="javascript:list()"><img src="$link.getContextPath()/images/button/btn_list.gif" border="0" /></a>
+#if( "$!params.userId" != "")
+							<a href="javascript:view()"><img src="$link.getContextPath()/images/button/btn_view.gif" border="0" /></a>
+#end
+							<a href="javascript:void(submitForm())"><img src="$link.getContextPath()/images/button/btn_save.gif" border="0" /></a>
+#if( "$!params.userId" != "")
+							<a href="javascript:init()"><img src="$link.getContextPath()/images/button/btn_reset.gif" border="0" /></a>
+#end
+						</div>
+						<div class="alret">
+							<p class="orange-bold">Tip. 중요공지</p>
+							<p class="pad20">
+								- 수정/삭제된 데이터는 복구되지 않습니다.<br> 
+								- 작업시 변경되지 않거나 에러 경고를 보시면 반드시 웹마스터에게 알려주시기 바랍니다.<br> 
+								</br>
+							</p>
+						</div>
+
+<script language="javascript" src="$link.getContextPath()/js/common.js"></script>
+<script language="javascript">
+<!--
+
+document.memberForm.userId.focus();
+
+function list()
+{
+	document.searchForm.userId.value = "";
+	document.searchForm.action = "$link.getContextPath()/in/member/list.do";
+	document.searchForm.method = "get";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function view() {
+	document.searchForm.action = "$link.getContextPath()/in/member/view.do";
+	document.searchForm.method = "get";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function init() {
+	// init search parameters
+	var sf = document.searchForm;
+	sf.pId.value		= "$!params.pId";
+	sf.pName.value		= "$!params.pName";
+	sf.pTel.value		= "$!params.pTel";
+	sf.pPageNo.value	= "$!params.pPageNo";
+	sf.pPageCount.value	= "$!params.pPageCount";
+	sf.userId.value		= "$!params.userId";
+	
+#if( "$!params.userId" != "")
+	// init update form
+	var mf = document.memberForm;
+	mf.userId.value		= "$!memberVo.userId";
+	mf.userName.value	= "$!memberVo.userName";
+	mf.telNo.value		= "$!memberVo.telNo";
+	mf.email.value		= "$!memberVo.email";
+	//mf.address.value	= "$!memberVo.address";
+	setComboBox(mf.authCode, "$!memberVo.authCode");
+	setComboBox(mf.useFlag, "$!memberVo.delYn");
+	mf.userHost.value	= "$!memberVo.userHost";
+  /*#if( "$!memberVo.userDesc" != "" )
+	mf.userDesc.value	= "$stringUtil.newlineToChar( $!memberVo.userDesc )";
+  #else
+	mf.userDesc.value	= "";
+  #end*/
+	
+	mf.userId.readOnly = true;
+#end
+	
+}
+
+function setComboBox(box, val) {
+	if (val != "") box.value = val;
+}
+
+init();
+
+function submitForm()
+{
+	var mf = document.memberForm;
+	
+	
+
+	var userHost = deleteSpace(mf.userHost.value);
+	mf.userHost.value = userHost;
+
+	if(checkNullEmpty(userHost))
+	{
+		alert("접근아이피를 입력하세요.");
+		mf.userHost.focus();
+		return;
+	}
+
+	if(checkByteOver(userHost, 1000))
+	{
+		alert("접근아이피는 1000 바이트 이내로 입력하세요.");
+		mf.userHost.focus();
+		return;
+	}
+
+
+#if( "$!params.userId" != "")
+	mf.action = "$link.getContextPath()/in/member/mod.do";
+#else
+	mf.action = "$link.getContextPath()/in/member/add.do";
+#end
+	mf.method = "post";
+	mf.target = "hiddenIFrame";
+	mf.submit();
+}
+
+//-->
+</script>
+<iframe name="hiddenIFrame" src="" frameborder="0" height="0" width="100%"></iframe>

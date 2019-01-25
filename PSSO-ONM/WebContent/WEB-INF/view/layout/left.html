@@ -1,0 +1,57 @@
+#set( $titleLeft = $link.getContextPath() + "/images/sub/cm/title_left_cm" + $menu.getMenu1() + ".gif" )
+
+#if( "$!menu.getMenu1()" == "01" )
+					<div class="snb">
+						<img src="$titleLeft" border="0" />
+						<ul>
+							<li><a href="$link.getContextPath()/customer/list.do" class="$menu.getClass('customer')"><span class="t-8">▶</span>&nbsp;&nbsp;고객조회</a></li>
+							<li><a href="$link.getContextPath()/seceder/list.do" class="$menu.getClass('seceder')"><span class="t-8">▶</span>&nbsp;&nbsp;탈퇴자조회</a></li>
+							<li><a href="$link.getContextPath()/custom14/list.do" class="$menu.getClass('custom14')"><span class="t-8">▶</span>&nbsp;&nbsp;14세미만조회</a></li>
+	#if( $authUtil.hasAuthority($session, "ROLE_SUPERVISOR") 
+	  || $authUtil.hasAuthority($session, "ROLE_USERALL") )
+	  						<li><a href="$link.getContextPath()/authcheck/list.do" class="$menu.getClass('authcheck')"><span class="t-8">▶</span>&nbsp;&nbsp;인증여부조회</a></li>	  	  						
+							<li><a href="$link.getContextPath()/in/eventlog/list.do" class="$menu.getClass('in-eventlog')"><span class="t-8">▶</span>&nbsp;&nbsp;정보변경이력조회</a></li>
+	#end
+						</ul>
+					</div>
+#end
+
+#if( "$!menu.getMenu1()" == "02" )
+					<div class="snb">
+						<img src="$titleLeft" border="0" />
+						<ul>
+							<li><a href="$link.getContextPath()/eventstat/time/list.do" class="$menu.getClass('eventstat-time')"><span class="t-8">▶</span>&nbsp;&nbsp;기간별 통계조회</a></li>
+							<li><a href="$link.getContextPath()/eventstat/site/list.do" class="$menu.getClass('eventstat-site')"><span class="t-8">▶</span>&nbsp;&nbsp;사이트별 통계조회</a></li>
+							<li><a href="$link.getContextPath()/authstat/time/list.do" class="$menu.getClass('authstat-time')"><span class="t-8">▶</span>&nbsp;&nbsp;인증여부 기간별 통계조회</a></li>
+							<li><a href="$link.getContextPath()/authstat/site/list.do" class="$menu.getClass('authstat-site')"><span class="t-8">▶</span>&nbsp;&nbsp;인증여부 사이트별 통계조회</a></li>
+						</ul>
+					</div>
+#end
+
+#if( "$!menu.getMenu1()" == "09" )
+					<div class="snb">
+						<img src="$titleLeft" border="0" />
+						<ul>
+							<li><a href="$link.getContextPath()/in/member/list.do" class="$menu.getClass('in-member')"><span class="t-8">▶</span>&nbsp;&nbsp;회원관리</a></li>
+						</ul>
+					</div>
+#end
+
+#if( "$!menu.getMenu1()" == "10" )
+					<div class="snb">
+						<img src="$titleLeft" border="0" />
+						<ul>
+							<li><a href="$link.getContextPath()/in/scheduler/view.do" class="$menu.getClass('in-scheduler')"><span class="t-8">▶</span>&nbsp;&nbsp;스케줄러관리</a></li>
+							<li><a href="$link.getContextPath()/in/connstat/view.do" class="$menu.getClass('in-connstat')"><span class="t-8">▶</span>&nbsp;&nbsp;연동상태조회</a></li>
+							<li><a href="$link.getContextPath()/in/config/view.do" class="$menu.getClass('in-config')"><span class="t-8">▶</span>&nbsp;&nbsp;설정조회</a></li>
+							<li><a href="$link.getContextPath()/in/terms/version/list.do" class="$menu.getClass('in-terms-version')"><span class="t-8">▶</span>&nbsp;&nbsp;약관관리</a></li>
+						</ul>
+					</div>
+#end
+<!-- 2012-11-21 ID복구 매뉴 삭제
+#if( "$!menu.getMenu1()" == "11"  || "$!menu.getMenu1()" == "11")
+					<div class="snb">
+						<img src="$titleLeft" border="0" />
+					</div>
+#end
+ -->

@@ -1,0 +1,36 @@
+
+<script language="javascript">
+<!--
+	document.oncontextmenu	= function() { return false; } 
+	document.ondragstart	= function() { return false; } 
+	document.onselectstart	= function() { return false; }
+//-->
+</script>
+
+
+#set( $topmenu01 = "btn_topmenu01_" + $menu.getOnOff('01') + ".gif" )
+#set( $topmenu02 = "btn_topmenu02_" + $menu.getOnOff('02') + ".gif" )
+#set( $topmenu09 = "btn_topmenu09_" + $menu.getOnOff('09') + ".gif" )
+#set( $topmenu10 = "btn_topmenu10_" + $menu.getOnOff('10') + ".gif" )
+#set( $topmenu11 = "btn_topmenu11_" + $menu.getOnOff('11') + ".gif" )
+			<div class="s-header_list">
+				<ul>
+					<li><img src="$link.getContextPath()/images/sub/default/logo.gif" alt="logo" width="199" height="32" border="0" /></li>
+					<li><a href="$link.getContextPath()/customer/list.do"><img 
+							src="$link.getContextPath()/images/sub/default/$topmenu01" width="110" height="33" border="0"/></a></li>
+#if( $authUtil.hasAuthority($session, "ROLE_SUPERVISOR") 
+  || $authUtil.hasAuthority($session, "ROLE_USERALL") )
+					<li><a href="$link.getContextPath()/eventstat/time/list.do"><img
+							src="$link.getContextPath()/images/sub/default/$topmenu02" width="110" height="33" border="0"/></a></li>
+#end
+#if( $authUtil.hasAuthority($session, "ROLE_SUPERVISOR") )
+					<li><a href="$link.getContextPath()/in/member/list.do"><img
+							src="$link.getContextPath()/images/sub/default/$topmenu09" width="110" height="33" border="0"/></a></li>
+					<li><a href="$link.getContextPath()/in/scheduler/view.do"><img
+							src="$link.getContextPath()/images/sub/default/$topmenu10" width="110" height="33" border="0"/></a></li>
+					<!-- 2012-11-21 ID복구 매뉴 삭제
+					<li><a href="$link.getContextPath()/restore/list.do"><img
+							src="$link.getContextPath()/images/sub/default/$topmenu11" width="110" height="33" border="0"/></a></li> -->
+#end
+				</ul>
+			</div>

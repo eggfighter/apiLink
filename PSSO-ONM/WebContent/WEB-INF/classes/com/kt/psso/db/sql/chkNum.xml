@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="chkNum">
+	
+	<resultMap id="chkNumResultMap" type="ChkNumVo">
+		<result property="cn" column="CN"/>
+		<result property="otp" column="OTP"/>
+		<result property="usedate" column="USE_DATE"/>
+		<result property="email" column="EMAIL"/>
+		<result property="mobile" column="MOBILE"/>
+
+	</resultMap>
+	
+	<select id="listChkNum" parameterType="SearchVo" resultMap="chkNumResultMap">
+		select CN
+			 , OTP
+			 , USE_DATE
+			 , EMAIL
+			 , MOBILE
+		from OTP_CHK
+		where 1=1
+		<if test="pDateFlag == 1 and pEmail != null and pEmail != ''" > and EMAIL = #{pEmail}</if> 
+		<if test="pDateFlag == 2 and pMobile != null and pMobile != ''"> and MOBILE = #{pMobile}</if>
+	</select>
+	
+</mapper>

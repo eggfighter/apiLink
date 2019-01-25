@@ -1,0 +1,102 @@
+#set( $titleImage = $link.getContextPath() + "/images/sub/cm/title_cm_" + $menu.getPathKey() + ".gif" )
+
+						<form name="searchForm" method="get">
+						<input type="hidden" name="pPageNo" />
+						<input type="hidden" name="pPageCount" />
+						<div class="cs">
+							<div class="cs-search"><img src="$titleImage" border="0" /></div>
+						</div>
+						</form>
+
+						<form name="termsVersionForm" method="post" onsubmit="return false">
+						<div class="list_detail">
+							<center>
+								<div class="box-noheight">
+									<table width="800px" border="0" cellspacing="0" cellpadding="0" align="center">
+										<tr height="25px">
+											<td bgcolor="#d6d6d6">
+												<table width="800" border="0" cellspacing="1" cellpadding="1">
+													<tr height="45">
+														<td width="40%" class="tt">항목명</td>
+														<td width="60%" class="tt">항목값</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															버전
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															<input type="text" name="version" size="10" maxlength="6" />
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</center>
+						</div>
+						<div style="padding: 10px 0 20px 0; text-align: center;">
+							<a href="javascript:list()"><img src="$link.getContextPath()/images/button/btn_list.gif" border="0" /></a>
+							<a href="javascript:void(submitForm())"><img src="$link.getContextPath()/images/button/btn_save.gif" border="0" /></a>
+						</div>
+						<div class="alret">
+							<p class="orange-bold">Tip. 중요공지</p>
+							<p class="pad20">
+								<b>- ※ 버전은 최대 6바이트까지만 입력이 가능합니다.</b>
+							</p>
+						</div>
+
+<script language="javascript" src="$link.getContextPath()/js/common.js"></script>
+<script language="javascript">
+<!--
+
+document.termsVersionForm.version.focus();
+
+function list()
+{
+	document.searchForm.action = "$link.getContextPath()/in/terms/version/list.do";
+	document.searchForm.method = "get";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function init() {
+	// init search parameters
+	var sf = document.searchForm;
+	sf.pPageNo.value	= "$!params.pPageNo";
+	sf.pPageCount.value	= "$!params.pPageCount";
+}
+
+init();
+
+function submitForm()
+{
+	var tf = document.termsVersionForm;
+	
+	var version = deleteSpace(tf.version.value);
+	tf.version.value = version;
+
+	if(checkNullEmpty(version))
+	{
+		alert("버전을 입력하세요.");
+		tf.version.focus();
+		return;
+	}
+
+	if(!checkLengthBetween(version, 1, 6))
+	{
+		alert("버전은 1~6자 이내로 입력하세요.");
+		tf.version.focus();
+		return false;
+	}
+
+
+	tf.action = "$link.getContextPath()/in/terms/version/add.do";
+	tf.method = "post";
+	tf.target = "hiddenIFrame";
+	tf.submit();
+}
+
+//-->
+</script>
+<iframe name="hiddenIFrame" src="" frameborder="0" height="0" width="100%"></iframe>

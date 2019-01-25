@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eventlog">
+
+	<resultMap id="eventLogResultMap" type="EventLogVo">
+		<id property="seq"              column="SEQ" />
+		<result property="editorId"     column="EDITOR_ID" />
+		<result property="userId"       column="USER_ID" />
+		<result property="operation"    column="OPERATION" />
+		<result property="fieldname"    column="FIELDNAME" />
+		<result property="before"       column="BEFORE" />
+		<result property="after"        column="AFTER" />
+		<result property="reason"       column="REASON" />
+		<result property="url"          column="URL" />
+		<result property="time"         column="TIME" />
+		<result property="ip"           column="IP" />
+		<result property="regdate"      column="REGDATE" />
+	</resultMap>
+	
+	<select id="listEventLog" parameterType="SearchVo" resultMap="eventLogResultMap">
+		select SEQ, EDITOR_ID, USER_ID
+			 , OPERATION, FIELDNAME, BEFORE
+			 , AFTER, REASON, URL
+			 , TIME
+			 , IP
+			 , REGDATE
+    	from EVENT_LOG
+    	where 1=1
+    	<if test="pEditorId != null and pEditorId != ''">and EDITOR_ID = #{pEditorId}</if>
+    	<if test="pUserId != null and pUserId != ''">and USER_ID = #{pUserId}</if>
+    	<if test="pDate != null and pDate != ''">and  replace(substring(TIME,1,10),'-','') = #{pDate}</if>
+    	order by SEQ desc
+	</select>
+	
+	<select id="countEventLog" parameterType="SearchVo" resultType="int">
+		select count(*) as CNT
+    	from EVENT_LOG
+    	where 1=1
+    	<if test="pEditorId != null and pEditorId != ''">and EDITOR_ID = #{pEditorId}</if>
+    	<if test="pUserId != null and pUserId != ''">and USER_ID = #{pUserId}</if>
+	</select>
+	
+	<select id="getEventLog" parameterType="int" resultMap="eventLogResultMap">
+		select SEQ, EDITOR_ID, USER_ID
+			 , OPERATION, FIELDNAME, BEFORE
+			 , AFTER, REASON, URL
+			 , TIME
+			 , IP
+			 , REGDATE
+    	from EVENT_LOG
+    	where SEQ = #{seq}
+	</select>
+	
+	<insert id="insertEventLog" parameterType="EventLogVo">
+		insert into EVENT_LOG (
+			EDITOR_ID, USER_ID
+		  , OPERATION, FIELDNAME, BEFORE
+		  , AFTER, REASON, URL
+		  , TIME, IP, REGDATE
+		) values (
+		  #{editorId}, #{userId}
+		  , #{operation}, #{fieldname}, #{before}
+		  , #{after}, #{reason}, #{url}
+		  , #{time}
+		  , #{ip}
+		  , CONVERT(varchar(19),GETDATE(),121)
+		)
+	</insert>
+	
+	<!--  
+	<insert id="insertEventLog" parameterType="EventLogVo">
+		insert into EVENT_LOG (
+			SEQ, EDITOR_ID, USER_ID
+		  , OPERATION, FIELDNAME, BEFRORE
+		  , AFTER, REASON, URL
+		  , TIME, IP, REGDATE
+		) values (
+			NEXTVAL('SEQ_EVENT_LOG')
+		  , #{editorId}, #{userId}
+		  , #{operation}, #{fieldname}, #{before}
+		  , #{after}, #{reason}, #{url}
+		  , TO_DATE(#{time}, 'YYYYMMDDHH24MISS')
+		  , #{ip}
+		  , current_timestamp
+		)
+	</insert> -->
+	
+</mapper>

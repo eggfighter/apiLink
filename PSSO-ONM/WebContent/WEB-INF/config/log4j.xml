@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Console Appender -->
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<!-- <param name="ConversionPattern" value="[%d{yyyy/MM/dd HH:mm:ss,SSS}] %-10c [%-5p][%t] [%m]%n" /> -->
+			<param name="ConversionPattern" value="[%d{HH:mm:ss.SSS}] %5p [%4.10t] %C.%M() - %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- PSSO Appender -->
+	<appender name="PSSO-ONM" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${log4j.logDir}\psso-onm.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{HH:mm:ss.SSS}] %5p [%t] %C{1}.%M() - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="PSSO-SQL" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${log4j.logDir}\psso-sql.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{HH:mm:ss.SSS}] %5p [%t] %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="PSSO-SCHEDULER" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${log4j.logDir}\psso-scheduler.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{HH:mm:ss.SSS}] %5p [%4.10t] %C{1}.%M() - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="PSSO-ETC" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${log4j.logDir}\psso-etc.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{HH:mm:ss.SSS}] %5p [%t] %C.%M(%F:%L) - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="VELOCITY" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${log4j.logDir}\velocity.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{HH:mm:ss.SSS}] %5p [%t] - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- Spring Logger -->
+	<logger name="org.springframework" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="PSSO-ETC" />
+		<!-- <appender-ref ref="STDOUT" /> -->
+	</logger>
+
+	<!-- MyBatis Logger -->
+	<logger name="org.apache.ibatis" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="PSSO-SQL" />
+		<!-- <appender-ref ref="STDOUT" /> -->
+	</logger>
+	<logger name="java.sql" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="PSSO-SQL" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+	
+	<!-- Velocity Logger -->
+	<logger name="org.apache.velocity" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="VELOCITY" />
+	</logger>
+
+	<!-- Quartz Logger -->
+	<logger name="org.quartz" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="PSSO-ETC" />
+	</logger>
+
+	<!-- Tiles Logger -->
+	<logger name="org.apache.tiles" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="PSSO-ETC" />
+	</logger>
+
+	<!-- PSSO-ONM Logger -->
+	<logger name="com.kt.psso" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="PSSO-ONM" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+	
+	<!-- PSSO-SCHEDULER Logger -->
+	<logger name="com.kt.psso.onm.scheduler" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="PSSO-SCHEDULER" />
+		<!-- <appender-ref ref="STDOUT" /> -->
+	</logger>
+
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</log4j:configuration>

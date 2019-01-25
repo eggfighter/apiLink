@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="seceder">
+	
+	<resultMap id="secederResultMap" type="SecederVo">
+		<result property="guid" column="GUID"/>
+		<result property="brn" column="BRN"/>
+		<result property="cn" column="CN"/>
+		<result property="contractnum" column="CONTRACTNUM"/>
+		<result property="Secedert" column="SecederT"/>
+		<result property="displayname" column="DISPLAYNAME"/>
+		<result property="mobile" column="MOBILE"/>
+		<result property="regdate" column="REGDATE"/>
+		<result property="regip" column="REGIP"/>
+		<result property="who" column="WHO"/>
+		<result property="withdrawdate" column="WITHDRAWDATE"/>
+		<result property="withdrawip" column="WITHDRAWIP"/>
+		<result property="encrrn" column="ENCRRN"/>
+		<result property="encchk" column="ENCCHK"/>
+		<result property="rrn7" column="RRN7"/>
+		<result property="ci" column="CI"/>
+		<result property="di" column="DI"/>
+		<result property="joinchk" column="JOINCHK"/>
+		<result property="civersion" column="CIVERSION"/>
+		<result property="ipin" column="IPIN"/>
+
+	</resultMap>
+	
+	
+	<select id="listSeceder" parameterType="SearchVo" resultMap="secederResultMap">
+		select GUID
+			 , BRN
+			 , CN
+			 , CONTRACTNUM
+			 , CUSTOMERT
+			 , DISPLAYNAME
+			 , MOBILE
+			 , REGDATE
+			 , REGIP
+			 , WHO
+			 , WITHDRAWDATE
+			 , WITHDRAWIP
+			 , ENCRRN
+			 , ENCCHK
+			 , RRN7
+			 , CI
+			 , DI
+			 , JOINCHK
+			 , CIVERSION
+			 , IPIN
+		from WITHDRAW
+		where 1=1
+		<if test="pDateFlag == 1"><![CDATA[ and WITHDRAWDATE >= (getdate() - 1) ]]></if> 
+		<if test="pDateFlag == 2"><![CDATA[ and WITHDRAWDATE < (getdate() - 1) ]]></if>
+		<if test="pCn != null and pCn != ''">and UPPER(CN) = UPPER(#{pCn})</if>
+    	<if test="pRrn7 != null and pRrn7 != ''">and RRN7 = #{pRrn7}</if>
+    	<if test="pDate != null and pDate != ''">and  substring(replace(WITHDRAWDATE,'-',''),1,8) = #{pDate}</if>
+	</select>
+	
+	<select id="countSeceder"  resultType="int">
+		select count(*) as CNT
+    	from WITHDRAW
+    	where 1=1
+	</select>
+	
+</mapper>

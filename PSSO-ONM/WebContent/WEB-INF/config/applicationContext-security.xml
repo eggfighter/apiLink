@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+	<global-method-security pre-post-annotations="enabled">
+		<!-- AspectJ pointcut expression that locates our "post" method and applies security that way
+		<protect-pointcut expression="execution(* bigbank.*Service.post*(..))" access="ROLE_TELLER"/>
+		-->
+	</global-method-security>
+
+	<http use-expressions="true">
+		<!-- static resources -->
+		<intercept-url pattern="/css/**" filters="none"/>
+		<intercept-url pattern="/js/**" filters="none"/>
+		<intercept-url pattern="/images/**" filters="none"/>
+		<!-- guest -->
+		<intercept-url pattern="/index.jsp" filters="none" />
+		<intercept-url pattern="/member/mod.do" filters="none" />
+		<intercept-url pattern="/favicon.ico" access="permitAll" requires-channel="any" />	
+	
+		<intercept-url pattern="/" access="permitAll"/>	
+		<intercept-url pattern="/httpchk.jsp" access="permitAll" requires-channel="any" />
+		<intercept-url pattern="/hello.do" access="permitAll" requires-channel="any" />		
+		<intercept-url pattern="/login.do*" filters="none" />		
+		<!-- admin -->
+		<intercept-url pattern="/in/eventlog/**" access="hasRole('ROLE_SUPERVISOR') or hasRole('ROLE_USERALL')" requires-channel="any" />
+		<intercept-url pattern="/authcheck/**" access="hasRole('ROLE_SUPERVISOR') or hasRole('ROLE_USERALL')" requires-channel="any" />
+		<intercept-url pattern="/authstat/**" access="hasRole('ROLE_SUPERVISOR') or hasRole('ROLE_USERALL')" requires-channel="any" />
+		<intercept-url pattern="/eventstat/**" access="hasRole('ROLE_SUPERVISOR') or hasRole('ROLE_USERALL')" requires-channel="any" />
+		<!-- admin -->
+		<intercept-url pattern="/in/**" access="hasRole('ROLE_SUPERVISOR')" requires-channel="any" />
+		<!-- normal user -->
+		<intercept-url pattern="/**" access="isAuthenticated()" requires-channel="any" />
+		
+		<form-login login-page="/login.do"
+					default-target-url="/customer/list.do"
+					authentication-failure-url="/login.do?error=true" />
+		<anonymous/>		
+		<logout logout-url="/logout.do" success-handler-ref="onmLogoutSuccessHandler" />
+		<!-- Uncomment to enable X509 client authentication support
+		<x509 />
+		-->
+		<!-- Uncomment to limit the number of sessions a user can have -->
+		<session-management>
+			<concurrency-control max-sessions="1" error-if-maximum-exceeded="false" expired-url="/login.do" />
+		</session-management>
+	</http>
+
+	<!--
+	<authentication-manager>
+		<authentication-provider>
+			<password-encoder hash="plaintext"/>
+			<user-service>
+				<user name="rod" password="1111" authorities="ROLE_SUPERVISOR, ROLE_USER, ROLE_TELLER" />
+				<user name="dianne" password="1111" authorities="ROLE_USER,ROLE_TELLER" />
+				<user name="scott" password="1111" authorities="ROLE_USER" />
+				<user name="peter" password="1111" authorities="ROLE_USER" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+	-->
+
+	<!-- JDBC USER SERVICE -->
+	<!--
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider>
+			<password-encoder hash="plaintext" />
+			<jdbc-user-service data-source-ref="dataSource"
+				authorities-by-username-query="select USER_ID as username, USER_TYPE as authority from ONM_USER where USER_ID = ?"
+				users-by-username-query="select USER_ID as username, USER_PSWD as password, USE_FLAG as enabled from ONM_USER where USER_ID = ?" />
+		</authentication-provider>
+	</authentication-manager>
+	-->
+
+	<!-- ONM USER SERVICE -->
+	<beans:bean name="userDetailsService" class="com.kt.psso.onm.member.OnmUserDetailsService">
+		<beans:property name="memberService" ref="memberService" />
+	</beans:bean>
+	<!--  
+	<beans:bean name="mailUtil" class="com.kt.psso.onm.util.MailUtil">
+		<beans:property name="mailService" ref="mailService" />
+	</beans:bean>
+	-->
+
+	<!-- 
+	<beans:bean name="loginController" class="com.kt.psso.onm.member.LoginController">
+		<beans:property name="memberService" ref="memberService" />
+	</beans:bean>
+	 -->
+	<beans:bean id="onmConnectionWriter" class="com.kt.psso.onm.scheduler.hc.LineWriter">
+		<beans:property name="baseDir" value="${baseDir.onmConnection}" />
+		<beans:property name="logName" value="${logName.onmConnection}" />
+	</beans:bean>	
+	
+	<beans:bean name="onmAuthenticationProvider" class="com.kt.psso.onm.member.OnmAuthenticationProvider">
+		<beans:property name="userDetailsService" ref="userDetailsService" />
+		<beans:property name="cryptoUtil" ref="cryptoUtilNew" />
+		<beans:property name="memberService" ref="memberService" />
+		<beans:property name="onmConnectionWriter" ref="onmConnectionWriter" />
+	</beans:bean>
+	
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider user-service-ref="userDetailsService" ref="onmAuthenticationProvider"/>
+	</authentication-manager>	
+	
+	<beans:bean name="onmLogoutSuccessHandler" class="com.kt.psso.onm.member.OnmLogoutSuccessHandler">
+		<beans:property name="onmConnectionWriter" ref="onmConnectionWriter" />
+	</beans:bean>
+
+</beans:beans>

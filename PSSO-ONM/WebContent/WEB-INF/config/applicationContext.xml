@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<import resource="mybatis-context.xml" />
+	<import resource="transaction-context.xml" />
+	<import resource="scheduler-context.xml" />
+
+	<!-- OnmConfig -->
+	<bean name="onmConfig" class="com.kt.psso.onm.admin.config.OnmConfig">
+		<property name="locations">
+			<value>/WEB-INF/config/psso.properties</value>
+		</property>
+	</bean>
+
+	<!-- MenuConfig -->
+	<bean name="menuConfig" class="com.kt.psso.onm.admin.config.MenuConfig">
+		<property name="locations">
+			<value>/WEB-INF/config/menu.properties</value>
+		</property>
+	</bean>
+
+	<!-- KTFCrypto 라이브러리-->
+	<!-- 
+	<bean name="cryptoUtil" class="com.kt.psso.onm.util.KTFCryptoUtil">
+		<property name="cipherAlgorithm" value="1" />
+		<property name="hashAlgorithm" value="0x0100" />
+	</bean>
+	 -->
+	 	 
+	<bean name="cryptoUtilNew" class="com.kt.psso.onm.util.KTFCryptoUtil">
+		<property name="cipherAlgorithm" value="1" />
+		<property name="hashAlgorithm" value="0x0200" />
+	</bean>
+
+	<bean id="onmUserWriter" class="com.kt.psso.onm.scheduler.hc.LineWriter">
+		<property name="baseDir" value="${baseDir.onmUser}" />
+		<property name="logName" value="${logName.onmUser}" />
+	</bean>
+	
+	<bean id="userRestoreWriter" class="com.kt.psso.onm.scheduler.hc.LineWriter">
+		<property name="baseDir" value="${baseDir.userRestore}" />
+		<property name="logName" value="${logName.userRestore}" />
+	</bean>
+	
+	<bean id="secederWriter" class="com.kt.psso.onm.scheduler.hc.LineWriter">
+		<property name="baseDir" value="${baseDir.search}" />
+		<property name="logName" value="${logName.search}" />
+	</bean>
+	
+	<bean id="customerWriter" class="com.kt.psso.onm.scheduler.hc.LineWriter">
+		<property name="baseDir" value="${baseDir.search}" />
+		<property name="logName" value="${logName.search}" />
+	</bean>
+	
+	<!-- MemberDao and MemberService -->
+	<bean name="memberDao" class="com.kt.psso.db.dao.MemberDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+	</bean>	
+
+	<bean name="memberService" class="com.kt.psso.onm.admin.member.MemberService">
+		<property name="memberDao" ref="memberDao" />
+		<property name="cryptoUtil" ref="cryptoUtilNew" />
+		<property name="onmUserWriter" ref="onmUserWriter" />
+	</bean>
+	 <!-- 
+	<bean name="mailUtil" class="com.kt.psso.onm.util.MailUtil">
+		<property name="mailService" ref="mailService" />
+	</bean>
+	
+	
+	<bean name="mailService" class="com.kt.psso.onm.otp.MailService">
+		<property name="mailSender" ref="mailSender" />
+	</bean>
+		
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	    <property name="host" value="${mail.host}"/>
+	    <property name="username" value="${mail.username}"/>
+	    <property name="password" value="${mail.password}"/>
+	    <property name="port" value="${mail.port}"/>
+	    <property name="javaMailProperties">
+	        <props>
+	            <prop key="mail.smtp.auth">${mail.smtp_auth}</prop>
+	            <prop key="hostname">${mail.host}</prop>
+	        </props>
+	    </property>
+	</bean>	
+	-->
+	<!-- RestoreDao and RestoreService -->
+	<bean name="restoreDao" class="com.kt.psso.db.dao.RestoreDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+	</bean>
+	
+	<bean name="restoreService" class="com.kt.psso.onm.restore.RestoreService">
+		<property name="restoreDao" ref="restoreDao" />
+		<property name="userRestoreWriter" ref="userRestoreWriter" />
+	</bean>
+	
+		<!-- secederDao and secederService -->
+	<bean name="secederDao" class="com.kt.psso.db.dao.SecederDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+	</bean>
+	
+	<bean name="secederService" class="com.kt.psso.onm.seceder.SecederService">
+		<property name="secederDao" ref="secederDao" />
+		<property name="secederWriter" ref="secederWriter" />
+	</bean>
+	
+	<!-- customerDao and customerService -->
+	<bean name="customerDao" class="com.kt.psso.db.dao.CustomerDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+	</bean>
+	
+	<bean name="customerService" class="com.kt.psso.onm.customer.CustomerService">
+		<property name="customerDao" ref="customerDao" />
+		<property name="customerWriter" ref="customerWriter" />
+	</bean>
+	
+	<bean name="custom14Service" class="com.kt.psso.onm.custom14.Custom14Service">
+		<property name="customerDao" ref="customerDao" />
+	</bean>
+	
+	
+	<!-- authcheckDao and authcheckService -->
+	<bean name="authCheckDao" class="com.kt.psso.db.dao.AuthCheckDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+	</bean>
+	
+	<bean name="authcheckService" class="com.kt.psso.onm.authcheck.AuthCheckService">
+		<property name="authCheckDao" ref="authCheckDao" />
+	</bean>
+	
+	
+
+	<!-- Spring Security Message Source -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:/org/springframework/security/messages"/>
+	</bean>
+
+</beans>

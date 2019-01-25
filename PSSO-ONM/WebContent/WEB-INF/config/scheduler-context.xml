@@ -1,0 +1,1152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context 
+
+http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- EventStatDao -->
+	<bean name="eventStatDao" class="com.kt.psso.db.dao.EventStatDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+	</bean>
+	
+	<!-- EventLogDao -->
+	<bean name="eventLogDao" class="com.kt.psso.db.dao.EventLogDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+	</bean>
+	
+	<!-- CustomerDao -->
+	<bean name="customerDao" class="com.kt.psso.db.dao.CustomerDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+	</bean>
+	
+	<!-- authCheckDao -->
+	<bean name="authCheckDao" class="com.kt.psso.db.dao.authCheckDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+	</bean>
+	
+	<!-- LineCollector -->
+	<bean name="lineCollector" class="com.kt.psso.onm.scheduler.LineCollectorImpl" />
+	
+	<!-- Log Parser -->
+	<bean id="loginLogParser" class="com.kt.psso.onm.scheduler.eventstat.parser.LoginLogParser" />
+	<bean id="joinLogParser" class="com.kt.psso.onm.scheduler.eventstat.parser.JoinLogParser" />
+	<bean id="withdrawLogParser" class="com.kt.psso.onm.scheduler.eventstat.parser.WithdrawLogParser" />
+	<bean id="updateStatLogParser" class="com.kt.psso.onm.scheduler.eventstat.parser.UpdateStatLogParser" />
+	<bean id="updateInsertLogParser" class="com.kt.psso.onm.scheduler.eventlog.parser.UpdateInsertLogParser" />
+	<bean id="Join14LogParser" class="com.kt.psso.onm.scheduler.eventstat.parser.Join14LogParser" />
+	<bean id="NoLoginLogParser" class="com.kt.psso.onm.scheduler.eventstat.parser.NoLoginLogParser" />
+	<bean id="SearchIdLogParser" class="com.kt.psso.onm.scheduler.eventstat.parser.SearchIdLogParser" />
+	<bean id="SearchPwLogParser" class="com.kt.psso.onm.scheduler.eventstat.parser.SearchPwLogParser" />
+	<bean id="ResultIdLogParser" class="com.kt.psso.onm.scheduler.eventstat.parser.ResultIdLogParser" />	
+	<bean id="AuthJoin14LogParser" class="com.kt.psso.onm.scheduler.authcheck.parser.AuthJoin14LogParser" />
+	<bean id="AuthNoLoginLogParser" class="com.kt.psso.onm.scheduler.authcheck.parser.AuthNoLoginLogParser" />
+	<bean id="AuthSearchIdLogParser" class="com.kt.psso.onm.scheduler.authcheck.parser.AuthSearchIdLogParser" />
+	<bean id="AuthSearchPwLogParser" class="com.kt.psso.onm.scheduler.authcheck.parser.AuthSearchPwLogParser" />
+	<!-- bean id="lastLogParser" class="com.kt.psso.onm.scheduler.lastlog.LastLogParser" /-->
+	
+	<!-- Log Collectors -->
+	<bean id="loginLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.login}" />
+		<property name="baseDir" value="${baseDir.login1}" />
+		<!-- <property name="backupDir" value="${backupDir.login1}" /> -->
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="loginLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="joinLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.join}" />
+		<property name="baseDir" value="${baseDir.join1}" />
+		<!-- <property name="backupDir" value="${backupDir.join1}" /> -->
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="joinLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="withdrawLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.withdraw}" />
+		<property name="baseDir" value="${baseDir.withdraw1}" />
+		<!-- <property name="backupDir" value="${backupDir.withdraw1}" /> -->
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="withdrawLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="updateLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.update}" />
+		<property name="baseDir" value="${baseDir.update1}" />
+		<!-- <property name="backupDir" value="${backupDir.update1}" /> -->
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="updateStatLogParser" />
+				</bean>
+				<bean class="com.kt.psso.onm.scheduler.eventlog.EventLogDataProcessor">
+					<property name="eventLogDao" ref="eventLogDao" />
+					<property name="logParser" ref="updateInsertLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	<!--  
+	<bean id="lastLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.login}" />
+		<property name="baseDir" value="${baseDir.login1}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.lastlog.LastLogDataProcessor">
+					<property name="customerDao" ref="customerDao" />
+					<property name="logParser" ref="lastLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+ -->
+ 
+
+  <bean id="Join14LogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.join14}" />
+		<property name="baseDir" value="${baseDir.join141}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="Join14LogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	  <bean id="NoLoginLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.nologin}" />
+		<property name="baseDir" value="${baseDir.nologin1}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="NoLoginLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	  <bean id="SearchIdLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.searchId}" />
+		<property name="baseDir" value="${baseDir.searchId1}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="SearchIdLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	  <bean id="SearchPwLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.searchPw}" />
+		<property name="baseDir" value="${baseDir.searchPw1}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="SearchPwLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="ResultIdLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.resultId}" />
+		<property name="baseDir" value="${baseDir.resultId1}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="ResultIdLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="AuthJoin14LogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.join14}" />
+		<property name="baseDir" value="${baseDir.join141}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.authcheck.AuthCheckLogDataProcessor">
+					<property name="authCheckDao" ref="authCheckDao" />
+					<property name="logParser" ref="AuthJoin14LogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	  <bean id="AuthNoLoginLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.nologin}" />
+		<property name="baseDir" value="${baseDir.nologin1}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.authcheck.AuthCheckLogDataProcessor">
+					<property name="authCheckDao" ref="authCheckDao" />
+					<property name="logParser" ref="AuthNoLoginLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	  <bean id="AuthSearchIdLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.searchId}" />
+		<property name="baseDir" value="${baseDir.searchId1}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.authcheck.AuthCheckLogDataProcessor">
+					<property name="authCheckDao" ref="authCheckDao" />
+					<property name="logParser" ref="AuthSearchIdLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	  <bean id="AuthSearchPwLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.searchPw}" />
+		<property name="baseDir" value="${baseDir.searchPw1}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.authcheck.AuthCheckLogDataProcessor">
+					<property name="authCheckDao" ref="authCheckDao" />
+					<property name="logParser" ref="AuthSearchPwLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="loginLogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.login}" />
+		<property name="baseDir" value="${baseDir.login2}" />
+		<!-- <property name="backupDir" value="${backupDir.login2}" /> -->
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="loginLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="joinLogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.join}" />
+		<property name="baseDir" value="${baseDir.join2}" />
+		<!-- <property name="backupDir" value="${backupDir.join2}" /> -->
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="joinLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="withdrawLogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.withdraw}" />
+		<property name="baseDir" value="${baseDir.withdraw2}" />
+		<!-- <property name="backupDir" value="${backupDir.withdraw2}" /> -->
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="withdrawLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="updateLogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.update}" />
+		<property name="baseDir" value="${baseDir.update2}" />
+		<!-- <property name="backupDir" value="${backupDir.update2}" /> -->
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="updateStatLogParser" />
+				</bean>
+				<bean class="com.kt.psso.onm.scheduler.eventlog.EventLogDataProcessor">
+					<property name="eventLogDao" ref="eventLogDao" />
+					<property name="logParser" ref="updateInsertLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>	
+	<!--
+	<bean id="lastLogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.login}" />
+		<property name="baseDir" value="${baseDir.login2}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.lastlog.LastLogDataProcessor">
+					<property name="customerDao" ref="customerDao" />
+					<property name="logParser" ref="lastLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	 -->
+  
+	 <bean id="Join14LogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.join14}" />
+		<property name="baseDir" value="${baseDir.join142}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="Join14LogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	  <bean id="NoLoginLogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.nologin}" />
+		<property name="baseDir" value="${baseDir.nologin2}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="NoLoginLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	  <bean id="SearchIdLogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.searchId}" />
+		<property name="baseDir" value="${baseDir.searchId2}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="SearchIdLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	  <bean id="SearchPwLogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.searchPw}" />
+		<property name="baseDir" value="${baseDir.searchPw2}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="SearchPwLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+
+	<bean id="ResultIdLogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.resultId}" />
+		<property name="baseDir" value="${baseDir.resultId2}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="ResultIdLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="AuthJoin14LogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.join14}" />
+		<property name="baseDir" value="${baseDir.join142}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.authcheck.AuthCheckLogDataProcessor">
+					<property name="authCheckDao" ref="authCheckDao" />
+					<property name="logParser" ref="AuthJoin14LogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	  <bean id="AuthNoLoginLogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.nologin}" />
+		<property name="baseDir" value="${baseDir.nologin2}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.authcheck.AuthCheckLogDataProcessor">
+					<property name="authCheckDao" ref="authCheckDao" />
+					<property name="logParser" ref="AuthNoLoginLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	  <bean id="AuthSearchIdLogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.searchId}" />
+		<property name="baseDir" value="${baseDir.searchId2}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.authcheck.AuthCheckLogDataProcessor">
+					<property name="authCheckDao" ref="authCheckDao" />
+					<property name="logParser" ref="AuthSearchIdLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	  <bean id="AuthSearchPwLogCollector2" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="${logName.searchPw}" />
+		<property name="baseDir" value="${baseDir.searchPw2}" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.authcheck.AuthCheckLogDataProcessor">
+					<property name="authCheckDao" ref="authCheckDao" />
+					<property name="logParser" ref="AuthSearchPwLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<!-- Health Checkers -->
+	<!-- bean id="realnameHealthChecker" class="com.kt.psso.onm.scheduler.hc.RealnameHealthChecker">
+		<property name="writer">
+			<bean class="com.kt.psso.onm.scheduler.hc.LineWriter">
+				<property name="baseDir" value="${baseDir.healthcheck}" />
+				<property name="logName" value="${logName.realname}" />
+			</bean>
+		</property>
+		<property name="host" value="${realname.host}" />
+		<property name="port" value="${realname.port}" />
+		<property name="key" value="${realname.key}" />
+		<property name="message" value="${realname.message}" />
+	</bean-->
+
+	<bean id="ipinHealthChecker" class="com.kt.psso.onm.scheduler.hc.IpinHealthChecker">
+		<property name="writer">
+			<bean class="com.kt.psso.onm.scheduler.hc.LineWriter">
+				<property name="baseDir" value="${baseDir.healthcheck}" />
+				<property name="logName" value="${logName.ipin}" />
+			</bean>
+		</property>
+		<property name="userId" value="${ipin.userId}" />
+		<property name="host" value="${ipin.host}" />
+		<property name="port" value="${ipin.port}" />
+		<property name="timeout" value="${ipin.timeout}" />
+		<property name="docCode" value="${ipin.docCode}" />
+		<property name="jobCode" value="${ipin.jobCode}" />
+		<property name="returnCode" value="${ipin.returnCode}" />
+		<property name="jumin" value="${ipin.jumin}" />
+		<property name="code" value="${ipin.code}" />
+	</bean>
+
+	<bean id="holderHealthChecker" class="com.kt.psso.onm.scheduler.hc.HolderHealthChecker">
+		<property name="writer">
+			<bean class="com.kt.psso.onm.scheduler.hc.LineWriter">
+				<property name="baseDir" value="${baseDir.healthcheck}" />
+				<property name="logName" value="${logName.holder}" />
+			</bean>
+		</property>
+		<property name="siteCode" value="${holder.siteCode}" />
+		<property name="jumin" value="${holder.jumin}" />
+		<property name="mobileCo" value="${holder.mobileCo}" />
+		<property name="mobileNo" value="${holder.mobileNo}" />
+	</bean>
+
+	<!-- MarklogDao -->
+	<bean name="marklogDao" class="com.kt.psso.db.dao.MarklogDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+	</bean>
+
+	<!-- PhonechkDao -->
+	<bean name="phonechkDao" class="com.kt.psso.db.dao.PhonechkDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+	</bean>
+
+	<!-- custom14Dao -->
+	<bean name="custom14Dao" class="com.kt.psso.db.dao.Custom14DaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+	</bean>
+
+	<!-- Data Cleaner -->
+	<bean id="dataCleaner" class="com.kt.psso.onm.scheduler.dc.DataCleaner">
+		<property name="marklogDao" ref="marklogDao" />
+		<property name="phonechkDao" ref="phonechkDao" />
+	</bean>
+	<bean id="dataCleaner2" class="com.kt.psso.onm.scheduler.dc.DataCleaner2">
+		<property name="custom14Dao" ref="custom14Dao" />
+	</bean>
+
+	<!-- EventStatTimeCreator -->
+	<bean id="eventStatTimeCreator" class="com.kt.psso.onm.scheduler.EventStatTimeCreator">
+		<property name="eventStatDao" ref="eventStatDao" />
+	</bean>
+
+	<!-- Jobs -->
+	<bean id="loginLogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="loginLogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="joinLogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="joinLogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-27</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="withdrawLogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="withdrawLogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="updateLogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="updateLogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+	 <!--
+	<bean id="lastLogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="lastLogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-1</value>
+			</array>
+		</property>
+	</bean>
+	-->
+	
+	<bean id="Join14LogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="Join14LogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="NoLoginLogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="NoLoginLogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="SearchIdLogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="SearchIdLogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="SearchPwLogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="SearchPwLogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="ResultIdLogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="ResultIdLogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="AuthJoin14LogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="AuthJoin14LogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-1</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="AuthNoLoginLogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="AuthNoLoginLogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-1</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="AuthSearchIdLogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="AuthSearchIdLogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-1</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="AuthSearchPwLogJob1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="AuthSearchPwLogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-1</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="loginLogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="loginLogCollector2" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="joinLogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="joinLogCollector2" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="withdrawLogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="withdrawLogCollector2" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="updateLogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="updateLogCollector2" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+	<!--
+		<bean id="lastLogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="lastLogCollector1" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-1</value>
+			</array>
+		</property>
+	</bean>
+	 -->
+	<bean id="Join14LogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="Join14LogCollector2" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="NoLoginLogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="NoLoginLogCollector2" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="SearchIdLogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="SearchIdLogCollector2" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="SearchPwLogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="SearchPwLogCollector2" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="ResultIdLogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="ResultIdLogCollector2" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="AuthJoin14LogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="AuthJoin14LogCollector2" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-1</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="AuthNoLoginLogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="AuthNoLoginLogCollector2" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-1</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="AuthSearchIdLogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="AuthSearchIdLogCollector2" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-1</value>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="AuthSearchPwLogJob2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="LOG_COLLECTOR" />
+		<property name="targetObject" ref="AuthSearchPwLogCollector2" />
+		<property name="targetMethod" value="collect" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-1</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="ipinJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="HEALTH_CHECKER" />
+		<property name="targetObject" ref="ipinHealthChecker" />
+		<property name="targetMethod" value="check" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<bean id="holderJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="HEALTH_CHECKER" />
+		<property name="targetObject" ref="holderHealthChecker" />
+		<property name="targetMethod" value="check" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<bean id="dataCleanerJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="DATA_MANAGE" />
+		<property name="targetObject" ref="dataCleaner" />
+		<property name="targetMethod" value="cleanData" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-24</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="dataCleaner2Job" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="DATA_MANAGE" />
+		<property name="targetObject" ref="dataCleaner2" />
+		<property name="targetMethod" value="cleanData" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>-336</value><!-- 14일 * 24시간 == 336 -->
+			</array>
+		</property>
+	</bean>
+
+	<bean id="eventStatTimeCreatorJob" 
+
+class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="group" value="DATA_MANAGE" />
+		<property name="targetObject" ref="eventStatTimeCreator" />
+		<property name="targetMethod" value="create" />
+		<property name="concurrent" value="false" />
+		<property name="arguments">
+			<array>
+				<value>0</value>
+			</array>
+		</property>
+	</bean>
+
+	<!-- Triggers -->
+	<bean id="loginLogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="loginLogJob1" />
+		<property name="cronExpression" value="0 30 0 * * ?" />
+	</bean>
+
+	<bean id="joinLogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="joinLogJob1" />
+		<property name="cronExpression" value="0 30 0 * * ?" />
+	</bean>
+
+	<bean id="withdrawLogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="withdrawLogJob1" />
+		<property name="cronExpression" value="0 30 0 * * ?" />
+	</bean>
+
+	<bean id="updateLogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="updateLogJob1" />
+		<property name="cronExpression" value="0 30 0 * * ?" />
+	</bean>
+	<!--
+	<bean id="lastLogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="lastLogJob1" />
+		<property name="cronExpression" value="0 5 * * * ?" />
+	</bean>
+	-->
+	
+	<bean id="Join14LogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="Join14LogJob1" />
+		<property name="cronExpression" value="0 30 0 * * ?" />
+	</bean>
+	
+	<bean id="NoLoginLogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="NoLoginLogJob1" />
+		<property name="cronExpression" value="0 30 0 * * ?" />
+	</bean>
+	
+	<bean id="SearchIdLogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="SearchIdLogJob1" />
+		<property name="cronExpression" value="0 30 0 * * ?" />
+	</bean>	
+	
+	<bean id="SearchPwLogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="SearchPwLogJob1" />
+		<property name="cronExpression" value="0 30 0 * * ?" />
+	</bean>	
+
+	<bean id="ResultIdLogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="ResultIdLogJob1" />
+		<property name="cronExpression" value="0 30 0 * * ?" />
+	</bean>
+	
+	<bean id="AuthJoin14LogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="AuthJoin14LogJob1" />
+		<property name="cronExpression" value="0 30 * * * ?" />
+	</bean>
+	
+	<bean id="AuthNoLoginLogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="AuthNoLoginLogJob1" />
+		<property name="cronExpression" value="0 30 * * * ?" />
+	</bean>
+	
+	<bean id="AuthSearchIdLogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="AuthSearchIdLogJob1" />
+		<property name="cronExpression" value="0 05 * * * ?" />
+	</bean>	
+	
+	<bean id="AuthSearchPwLogTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="AuthSearchPwLogJob1" />
+		<property name="cronExpression" value="0 05 * * * ?" />
+	</bean>	
+
+	
+	<bean id="loginLogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="loginLogJob2" />
+		<property name="cronExpression" value="0 45 0 * * ?" />
+	</bean>
+
+	<bean id="joinLogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="joinLogJob2" />
+		<property name="cronExpression" value="0 45 0 * * ?" />
+	</bean>
+
+	<bean id="withdrawLogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="withdrawLogJob2" />
+		<property name="cronExpression" value="0 45 0 * * ?" />
+	</bean>
+
+	<bean id="updateLogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="updateLogJob2" />
+		<property name="cronExpression" value="0 45 0 * * ?" />
+	</bean>
+	<!--
+	<bean id="lastLogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="lastLogJob2" />
+		<property name="cronExpression" value="0 10 * * * ?" />
+	</bean>
+	-->
+	 
+	<bean id="Join14LogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="Join14LogJob2" />
+		<property name="cronExpression" value="0 45 0 * * ?" />
+	</bean>
+	
+	<bean id="NoLoginLogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="NoLoginLogJob2" />
+		<property name="cronExpression" value="0 45 0 * * ?" />
+	</bean>
+	
+	<bean id="SearchIdLogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="SearchIdLogJob2" />
+		<property name="cronExpression" value="0 45 0 * * ?" />
+	</bean>
+	
+	<bean id="SearchPwLogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="SearchPwLogJob2" />
+		<property name="cronExpression" value="0 45 0 * * ?" />
+	</bean>
+
+	<bean id="ResultIdLogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="ResultIdLogJob2" />
+		<property name="cronExpression" value="0 45 0 * * ?" />
+	</bean>
+ 
+ 	<bean id="AuthJoin14LogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="AuthJoin14LogJob2" />
+		<property name="cronExpression" value="0 20 * * * ?" />
+	</bean>
+	
+	<bean id="AuthNoLoginLogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="AuthNoLoginLogJob2" />
+		<property name="cronExpression" value="0 20 * * * ?" />
+	</bean>
+	
+	<bean id="AuthSearchIdLogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="AuthSearchIdLogJob2" />
+		<property name="cronExpression" value="0 20 * * * ?" />
+	</bean>	
+	
+	<bean id="AuthSearchPwLogTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="AuthSearchPwLogJob2" />
+		<property name="cronExpression" value="0 20 * * * ?" />
+	</bean>	
+
+
+	<bean id="ipinTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="ipinJob" />
+		<property name="cronExpression" value="20 * * * * ?" />
+	</bean>
+
+	<bean id="holderTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="holderJob" />
+		<property name="cronExpression" value="40 * * * * ?" />
+	</bean>
+
+	<bean id="dataCleanerTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="dataCleanerJob" />
+		<property name="cronExpression" value="0 0 1 * * ?" />
+	</bean>
+
+	<bean id="dataCleaner2Trigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="dataCleaner2Job" />
+		<property name="cronExpression" value="0 0 1 * * ?" />
+	</bean>
+
+	<bean id="eventStatTimeCreatorTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="eventStatTimeCreatorJob" />
+		<property name="cronExpression" value="0 1 0 * * ?" />
+	</bean>
+
+	<!-- Scheduler -->
+	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!-- 로그 -->
+				<ref bean="loginLogTrigger1" />
+				<ref bean="joinLogTrigger1" />
+				<ref bean="withdrawLogTrigger1" />
+				<ref bean="updateLogTrigger1" />
+				<!-- ref bean="lastLogTrigger1" /-->
+				
+				<ref bean="Join14LogTrigger1" />
+				<ref bean="NoLoginLogTrigger1" />
+				<ref bean="SearchIdLogTrigger1" />
+				<ref bean="SearchPwLogTrigger1" />
+				<ref bean="ResultIdLogTrigger1" />
+				
+				<ref bean="AuthJoin14LogTrigger1" />
+				<ref bean="AuthNoLoginLogTrigger1" />
+				<ref bean="AuthSearchIdLogTrigger1" />
+				<ref bean="AuthSearchPwLogTrigger1" />
+				<ref bean="loginLogTrigger2" />
+				<ref bean="joinLogTrigger2" />
+				<ref bean="withdrawLogTrigger2" />
+				<ref bean="updateLogTrigger2" />
+				<!--  ref bean="lastLogTrigger2" /-->
+				<ref bean="Join14LogTrigger2" />
+				<ref bean="NoLoginLogTrigger2" />
+				<ref bean="SearchIdLogTrigger2" />
+				<ref bean="SearchPwLogTrigger2" />
+				<ref bean="ResultIdLogTrigger2" />
+				<ref bean="AuthJoin14LogTrigger2" />
+				<ref bean="AuthNoLoginLogTrigger2" />
+				<ref bean="AuthSearchIdLogTrigger2" />
+				<ref bean="AuthSearchPwLogTrigger2" />
+				
+				<!-- 외부연동 health checker -->
+				<!--  ref bean="realnameTrigger" /-->
+				<ref bean="ipinTrigger" />
+				<ref bean="holderTrigger" />
+				<!-- 보안문자, 인증번호 Data Cleaner-->
+				<ref bean="dataCleanerTrigger" />
+				<!-- 임시가입 Data Cleaner-->
+				<ref bean="dataCleaner2Trigger" />
+				<!-- 통계 시간 생성 -->
+				<ref bean="eventStatTimeCreatorTrigger" />
+			</list>
+		</property>
+		<property name="configLocation">
+			<value>/WEB-INF/config/quartz.properties</value>
+		</property>
+	</bean>
+	
+</beans>

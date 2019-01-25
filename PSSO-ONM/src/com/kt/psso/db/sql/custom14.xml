@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="custom14">
+	
+	<resultMap id="custom14ResultMap" type="CustomerVo">
+		<result property="cn" column="CN"/>
+		<result property="birthday" column="BIRTHDAY"/>
+		<result property="birthsign" column="BIRTHSIGN"/>
+		<result property="brn" column="BRN"/>
+		<result property="cdma2kind" column="CDMA2KIND"/>
+		<result property="conncidname" column="CONNCIDNAME"/>
+		<result property="contractnum" column="CONTRACTNUM"/>
+		<result property="customerid" column="CUSTOMERID"/>
+		<result property="customert" column="CUSTOMERT"/>
+		<result property="displayname" column="DISPLAYNAME"/>
+		<result property="gender" column="GENDER"/>
+		<result property="homeaddress" column="HOMEADDRESS"/>
+		<result property="homeaddress2" column="HOMEADDRESS2"/>
+		<result property="homephone" column="HOMEPHONE"/>
+		<result property="homepostcode" column="HOMEPOSTCODE"/>
+		<result property="lastlogin" column="LASTLOGIN"/>
+		<result property="mobile" column="MOBILE"/>
+		<result property="modelname" column="MODELNAME"/>
+		<result property="mreceiver" column="MRECEIVER"/>
+		<result property="nickname" column="NICKNAME"/>
+		<result property="nominatorid" column="NOMINATORID"/>
+		<result property="otherm" column="OTHERM"/>
+		<result property="pwdanswer" column="PWDANSWER"/>
+		<result property="pwdhint" column="PWDHINT"/>
+		<result property="realnamechoice" column="REALNAMECHOICE"/>
+		<result property="receiver" column="RECEIVER"/>
+		<result property="regdate" column="REGDATE"/>
+		<result property="regip" column="REGIP"/>
+		<result property="svcoff" column="SVCOFF"/>
+		<result property="spamreceiver" column="SPAMRECEIVER"/>
+		<result property="updatetime" column="UPDATETIME"/>
+		<result property="wedding" column="WEDDING"/>
+		<result property="pwdresettime" column="PWDRESETTIME"/>
+		<result property="lastloginsite" column="LASTLOGINSITE"/>
+		<result property="pwdupdatetime" column="PWDUPDATETIME"/>
+		<result property="comImsinum" column="COM_IMSINUM"/>
+		<result property="comRegchk" column="COM_REGCHK"/>
+		<result property="tempid" column="TEMPID"/>
+		<result property="agm4" column="AGM4"/>
+		<result property="agm4Date" column="AGM4_DATE"/>
+		<result property="agm5" column="AGM5"/>
+		<result property="agm5Date" column="AGM5_DATE"/>
+		<result property="agm3" column="AGM3"/>
+		<result property="agm3Date" column="AGM3_DATE"/>
+		<result property="encrrn" column="ENCRRN"/>
+		<result property="encchk" column="ENCCHK"/>
+		<result property="rrn7" column="RRN7"/>
+		<result property="ci" column="CI"/>
+		<result property="di" column="DI"/>
+		<result property="joinchk" column="JOINCHK"/>
+		<result property="qookid" column="QOOKID"/>
+		<result property="cochk" column="COCHK"/>
+		<result property="civersion" column="CIVERSION"/>
+		<result property="ipin" column="IPIN"/>
+		<result property="encncid" column="ENCNCID"/>
+		<result property="encconncid" column="ENCCONNCID"/>
+		<result property="encuserpwd" column="ENCUSERPWD"/>
+		<result property="failcheck" column="FAILCHECK"/>
+		<result property="failcheckDate" column="FAILCHECK_DATE"/>
+		<result property="kpm" column="KPM"/>
+		<result property="soipsaid" column="SoIPSAID"/>
+		<result property="soipcust" column="SoIPCUST"/>
+		<result property="soipbrn" column="SoIPBRN"/>
+		<result property="ollehagm" column="OLLEHAGM"/>
+		<result property="ollehagmdate" column="OLLEHAGMDATE"/>
+		<result property="soipphone" column="SoIPPHONE"/>
+		<result property="soipcustid" column="SoIPCUSTID"/>
+		<result property="mregchk" column="MREGCHK"/>
+		<result property="agm6" column="AGM6"/>
+		<result property="agm6Date" column="AGM6_DATE"/>
+		<result property="prvCdma2kind" column="PRV_CDMA2KIND"/>
+		<result property="prvContractnum" column="PRV_CONTRACTNUM"/>
+		<result property="prvCustomerid" column="PRV_CUSTOMERID"/>
+		<result property="prvCustomert" column="PRV_CUSTOMERT"/>
+		<result property="prvMobile" column="PRV_MOBILE"/>
+		<result property="prvModelname" column="PRV_MODELNAME"/>
+		<result property="prvSvcoff" column="PRV_SVCOFF"/>
+		<result property="prvEncncid" column="PRV_ENCNCID"/>
+		<result property="prvBrn" column="PRV_BRN"/>
+		<result property="actSeq" column="ACT_SEQ"/>
+		<result property="actCode" column="ACT_CODE"/>
+		<result property="actDate" column="ACT_DATE"/>
+		<result property="procRslt" column="PROC_RSLT"/>
+		<result property="provDate" column="PROV_DATE"/>
+	</resultMap>
+	
+	<select id="listCustom14" parameterType="SearchVo" resultMap="custom14ResultMap">
+		select CN
+		     , BIRTHDAY
+		     , BIRTHSIGN
+		     , BRN
+		     , CDMA2KIND
+		     , CONNCIDNAME
+		     , CONTRACTNUM
+		     , CUSTOMERID
+		     , CUSTOMERT
+		     , DISPLAYNAME
+		     , GENDER
+		     , HOMEADDRESS
+		     , HOMEADDRESS2
+		     , HOMEPHONE
+		     , HOMEPOSTCODE
+		     , LASTLOGIN
+		     , MOBILE
+		     , MODELNAME
+		     , MRECEIVER
+		     , NICKNAME
+		     , NOMINATORID
+		     , OTHERM
+		     , PWDANSWER
+		     , PWDHINT
+		     , REALNAMECHOICE
+		     , RECEIVER
+		     , REGDATE
+		     , REGIP
+		     , SVCOFF
+		     , SPAMRECEIVER
+		     , UPDATETIME
+		     , WEDDING
+		     , PWDRESETTIME
+		     , LASTLOGINSITE
+		     , PWDUPDATETIME
+		     , COM_IMSINUM
+		     , COM_REGCHK
+		     , TEMPID
+		     , AGM4
+		     , AGM4_DATE
+		     , AGM5
+		     , AGM5_DATE
+		     , AGM3
+		     , AGM3_DATE
+		     , ENCRRN
+		     , ENCCHK
+		     , RRN7
+		     , CI
+		     , DI
+		     , JOINCHK
+		     , QOOKID
+		     , COCHK
+		     , CIVERSION
+		     , IPIN
+		     , ENCNCID
+		     , ENCCONNCID
+		     , ENCUSERPWD
+		     , FAILCHECK
+		     , FAILCHECK_DATE
+		     , KPM
+		     , SoIPSAID
+		     , SoIPCUST
+		     , SoIPBRN
+		     , OLLEHAGM
+		     , OLLEHAGMDATE
+		     , SoIPPHONE
+		     , SoIPCUSTID
+		     , MREGCHK
+		     , AGM6
+		     , AGM6_DATE
+		     , PRV_CDMA2KIND
+		     , PRV_CONTRACTNUM
+		     , PRV_CUSTOMERID
+		     , PRV_CUSTOMERT
+		     , PRV_MOBILE
+		     , PRV_MODELNAME
+		     , PRV_SVCOFF
+		     , PRV_ENCNCID
+		     , PRV_BRN
+		     , ACT_SEQ
+		     , ACT_CODE
+		     , ACT_DATE
+		     , PROC_RSLT
+		     , PROV_DATE
+		from PORTALUSER
+		where 1=1
+    	<if test="pCn != null and pCn != ''">and UPPER(CN) = UPPER(#{pCn})</if>
+    	<if test="pRrn7 != null and pRrn7 != ''">and RRN7 = #{pRrn7}</if>
+    	<if test="pDate != null and pDate != ''">and  substring(replace(REGDATE,'-',''),1,8) = #{pDate}</if>
+        and BIRTHDAY >=  convert(varchar(8),DATEADD ( mm , -168, getdate() ), 112)
+	</select>
+	
+	<select id="getCustom14" parameterType="String" resultMap="custom14ResultMap">
+		select CN
+		     , BIRTHDAY
+		     , BIRTHSIGN
+		     , BRN
+		     , CDMA2KIND
+		     , CONNCIDNAME
+		     , CONTRACTNUM
+		     , CUSTOMERID
+		     , CUSTOMERT
+		     , DISPLAYNAME
+		     , GENDER
+		     , HOMEADDRESS
+		     , HOMEADDRESS2
+		     , HOMEPHONE
+		     , HOMEPOSTCODE
+		     , LASTLOGIN
+		     , MOBILE
+		     , MODELNAME
+		     , MRECEIVER
+		     , NICKNAME
+		     , NOMINATORID
+		     , OTHERM
+		     , PWDANSWER
+		     , PWDHINT
+		     , REALNAMECHOICE
+		     , RECEIVER
+		     , REGDATE
+		     , REGIP
+		     , SVCOFF
+		     , SPAMRECEIVER
+		     , UPDATETIME
+		     , WEDDING
+		     , PWDRESETTIME
+		     , LASTLOGINSITE
+		     , PWDUPDATETIME
+		     , COM_IMSINUM
+		     , COM_REGCHK
+		     , TEMPID
+		     , AGM4
+		     , AGM4_DATE
+		     , AGM5
+		     , AGM5_DATE
+		     , AGM3
+		     , AGM3_DATE
+		     , ENCRRN
+		     , ENCCHK
+		     , RRN7
+		     , CI
+		     , DI
+		     , JOINCHK
+		     , QOOKID
+		     , COCHK
+		     , CIVERSION
+		     , IPIN
+		     , ENCNCID
+		     , ENCCONNCID
+		     , ENCUSERPWD
+		     , FAILCHECK
+		     , FAILCHECK_DATE
+		     , KPM
+		     , SoIPSAID
+		     , SoIPCUST
+		     , SoIPBRN
+		     , OLLEHAGM
+		     , OLLEHAGMDATE
+		     , SoIPPHONE
+		     , SoIPCUSTID
+		     , MREGCHK
+		     , AGM6
+		     , AGM6_DATE
+		     , PRV_CDMA2KIND
+		     , PRV_CONTRACTNUM
+		     , PRV_CUSTOMERID
+		     , PRV_CUSTOMERT
+		     , PRV_MOBILE
+		     , PRV_MODELNAME
+		     , PRV_SVCOFF
+		     , PRV_ENCNCID
+		     , PRV_BRN
+		     , ACT_SEQ
+		     , ACT_CODE
+		     , ACT_DATE
+		     , PROC_RSLT
+		     , PROV_DATE
+		from PORTALUSER
+		where UPPER(CN) = UPPER(#{cn})
+	</select>
+	 
+		 
+	<update id="updateCustom14" parameterType="Custom14Vo">
+		update PORTALUSER set
+			CUSTOMERT		= #{customert}
+		  , HOMEPHONE		= #{homephone}
+		  , RECEIVER		= #{receiver}
+		  , MRECEIVER		= #{mreceiver}
+		<if test="updatetime != null and updatetime != ''">
+		  <!-- , UPDATETIME		= TO_DATE(#{updatetime}, 'YYYY-MM-DD HH24:MI:SS') -->
+		  , UPDATETIME		= #{updatetime}
+		</if>
+		  , BIRTHDAY		= #{birthday}
+		  , CONTRACTNUM		= #{contractnum}
+		  , OTHERM			= #{otherm}
+		  , CONNCIDNAME		= #{conncidname}
+		  , BRN				= #{brn}
+		  , DISPLAYNAME		= #{displayname}
+		  , PWDHINT			= #{pwdhint}
+		  , PWDANSWER		= #{pwdanswer}
+		<if test="lastlogin != null and lastlogin != ''">
+		  , LASTLOGIN		= #{lastlogin}
+		</if>
+		<if test="pwdupdatetime != null and pwdupdatetime != ''">
+		  , PWDUPDATETIME	= #{pwdupdatetime}
+		</if>
+		<if test="nominatorid != null and nominatorid != ''">
+		  , NOMINATORID		= #{nominatorid}
+		</if>
+		  , REGIP			= #{regip}
+		  , REALNAMECHOICE	= #{realnamechoice}
+		  , SVCOFF			= #{svcoff}
+		  , KPM				= #{kpm}
+		<if test="encuserpwd != null and encuserpwd != ''">
+		  , ENCUSERPWD		= #{encuserpwd}
+		</if>
+		where UPPER(CN) = UPPER(#{cn})
+	</update>
+	
+	<delete id="deleteCustom14" parameterType="Custom14Vo">
+		delete from PORTALUSER 
+		where UPPER(CN) = UPPER(#{cn})
+	</delete>
+
+	<delete id="deleteCustom14Before" parameterType="string">
+	<![CDATA[
+		delete from USERINFO14 
+		where REGDATE <= #{day}
+	]]>
+	</delete>
+	
+	<select id="countCustom14"  resultType="int">
+		select count(*) as CNT
+    	from PORTALUSER
+    	where 1=1
+    	and BIRTHDAY >= convert(varchar(8),DATEADD ( mm , -168, getdate() ), 112)
+	</select>
+	
+</mapper>

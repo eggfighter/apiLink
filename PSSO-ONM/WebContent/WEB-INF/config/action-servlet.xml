@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+						http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+						
+	<context:component-scan base-package="com.kt.psso.db.dao, com.kt.psso.onm" />
+
+	<context:annotation-config />
+	<mvc:interceptors>
+		<mvc:interceptor> 
+			<mvc:mapping path="/**/*" /> 
+			<bean class="com.kt.psso.onm.common.SecurityInterceptor">
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<bean id="tilesViewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="requestContextAttribute" value="rc" />
+		<property name="viewClass">
+			<value>org.springframework.web.servlet.view.tiles2.TilesView</value>
+		</property>
+		<property name="order" value="1" />
+	</bean>
+
+	<bean id="tilesConigurer"
+		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/config/tiles-config.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- MultiPart -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- one of the properties available; the maximum file size in bytes 10M -->
+		<property name="maxUploadSize">
+			<value>10485760</value>
+		</property>
+	</bean>
+
+</beans>

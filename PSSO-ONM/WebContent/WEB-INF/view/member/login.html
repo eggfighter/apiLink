@@ -1,0 +1,110 @@
+<body class="bg_main" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" 
+	oncontextmenu="return false;" ondragstart="return false;" onselectstart="return false;">
+
+	<div class="mainbox">
+		<div class="header">
+			<img src="$link.getContextPath()/images/main/logo.gif" border="0" />
+		</div>
+		<div class="title">
+			<img src="$link.getContextPath()/images/main/title.gif" border="0" />
+		</div>
+		<div class="login">
+			
+<script language="javascript">
+<!--
+function setIcon(obj, flag) {
+	if (flag) {
+		var url = "$link.getContextPath()/images/ico/ico_" + obj.id + ".gif";
+		obj.style.background = "url(" + url + ") no-repeat"; 
+	} else {
+		obj.style.background = "";
+	}
+}
+onload = function() {
+	var obj;
+	obj = document.getElementById("webid");
+	if (obj.value == '') setIcon(obj, true);
+//	if (obj.value == '') {
+//		obj.focus();
+//		setIcon(obj, false);
+//	}
+	obj = document.getElementById("webpw");
+	if (obj.value == '') setIcon(obj, true);
+}
+//-->
+</script>
+
+			<form name='f' action='j_spring_security_check' method='post'>
+			
+			<div>
+				<span style="background: #ffffff"><input name="j_username" type="text" class="webid" id="webid" tabindex="1" 
+					onfocus="this.className='webid webidOn'; setIcon(this, false);"
+					onblur="this.className='webid'; if (this.value == '') setIcon(this, true);"
+					onkeypress="if (event.keyCode == 13) login();"
+					/></span>
+			</div>
+			<div>
+				<span style="background: #ffffff"><input name="j_password" type="password" class="webpw" id="webpw" tabindex="2"  
+					onfocus="this.className='webpw webpwOn'; setIcon(this, false);"
+					onblur="this.className='webpw'; if (this.value == '') setIcon(this, true);"
+					onkeypress="if (event.keyCode == 13) login();"
+					autocomplete="off"/>
+				</span>
+			</div>
+		
+			</form>
+			
+			<div class="mainbtn">
+			   <input type="image" onClick="javascript:login()"
+					src="$link.getContextPath()/images/main/btn_login_off.gif" alt="btn_login"
+					name="btn_login" width="135" height="31" border="0" id="btn_login" tabindex="3" formmethod="post"/>&nbsp;	
+			   <a href="javascript:reset()"><img
+					src="$link.getContextPath()/images/main/btn_cancel_off.gif" name="btn_cancel" width="135"
+					height="31" border="0" id="btn_cancel" tabindex="4" /></a>
+			</div>
+			<div class="alert">
+#if( "$!params.error" == "true" )
+				$!message
+#end
+				&nbsp;
+			</div>
+
+		</div>
+		<div class="version">
+			<span class="center">Copyright (c) 2011 kt corp. all rights reserved.</span>
+		</div>
+
+	</div>
+
+<script language="javascript">
+<!--
+
+function login() {
+	if (document.f.j_username.value == "") {
+		alert("아이디를 입력하세요");
+		document.f.j_username.focus();
+		return;
+	}
+	if (document.f.j_password.value == "") {
+		alert("패스워드를 입력하세요");
+		document.f.j_password.focus();
+		return;
+	}
+	document.f.submit();
+}
+function reset() {
+	document.f.reset();
+}
+
+function init() {
+	   var result = "$!result";
+		if (result == "1"){
+			window.open("$link.getContextPath()/member/passwd.do","", "scrollbars=yes, status=yes, width=600, height=210, top=10, left=300");
+		}
+}
+
+init();
+//-->
+</script>
+
+</body>

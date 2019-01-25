@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- loginLogCollector -->
+	<bean name="eventStatDao" class="com.kt.psso.db.dao.TestEventStatDaoImpl" />
+	<bean name="customerDao" class="com.kt.psso.db.dao.TestCustomerDaoImpl"/>
+	<bean name="authCheckDao" class="com.kt.psso.db.dao.TestAuthCheckDaoImpl" />
+	<bean name="lineCollector" class="com.kt.psso.onm.scheduler.LineCollectorImpl" />
+	<bean id="loginLogParser" class="com.kt.psso.onm.scheduler.eventstat.parser.LoginLogParser" />
+	<bean id="lastLogParser" class="com.kt.psso.onm.scheduler.lastlog.LastLogParser" />
+	<bean id="authCreditcardLogParser" class="com.kt.psso.onm.scheduler.authcheck.AuthCertificateLogParser" />
+	
+	<bean id="loginLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="'MQ_SUCCESS_'yyyy-MM-dd'.log'" />
+		<property name="baseDir" value="C:\\Temp\\psso-events\\SUCCESSLog" />
+		<!-- <property name="backupDir" value="${backupDir.login1}" /> -->
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.eventstat.EventStatDataProcessor">
+					<property name="eventStatDao" ref="eventStatDao" />
+					<property name="logParser" ref="loginLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="lastLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="'MQ_SUCCESS_20111218.log'" />
+		<property name="baseDir" value="C:\\temp\\psso-logs" />
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.lastlog.LastLogDataProcessor">
+					<property name="customerDao" ref="customerDao" />
+					<property name="logParser" ref="lastLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="authCreditcardLogCollector1" class="com.kt.psso.onm.scheduler.LogCollector">
+		<property name="logName" value="'certificate_2012-10-18.log'" />
+		<property name="baseDir" value="'D:\psso-logs'" />
+		<!-- <property name="backupDir" value="${backupDir.join1}" /> -->
+		<property name="lineCollector" ref="lineCollector" />
+		<property name="logDataProcessors">
+			<array>
+				<bean class="com.kt.psso.onm.scheduler.authcheck.AuthCheckLogDataProcessor">
+					<property name="authCheckDao" ref="authCheckDao" />
+					<property name="logParser" ref="authCreditcardLogParser" />
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+</beans>

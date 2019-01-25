@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="authcheck">
+	
+	<resultMap id="authcheckResultMap" type="AuthCheckSearchVo">
+		<result property="cn" column="CN"/>
+		<result property="event_type" column="EVENT_TYPE"/>
+		<result property="timeslice" column="TIMESLICE"/>
+		<result property="otherm" column="OTHERM"/>
+		<result property="displayname" column="DISPLAYNAME"/>
+	</resultMap>
+	
+	
+	<select id="listAuthCheck" parameterType="SearchVo" resultMap="authcheckResultMap">
+		SELECT 
+			AUTH_STAT.EVENT_TYPE,
+			CONVERT(DATETIME,substring(AUTH_STAT.TIMESLICE,1,8)+' '+substring(AUTH_STAT.TIMESLICE,9,2)+':'+substring(AUTH_STAT.TIMESLICE,11,2)+':'+substring(AUTH_STAT.TIMESLICE,13,2)) AS TIMESLICE,
+			<!--  TO_CHAR(TO_DATE(AUTH_STAT.TIMESLICE, 'YYYYMMDDHH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AS TIMESLICE,-->
+			AUTH_STAT.CN,
+			PORTALUSER.DISPLAYNAME,
+			case when charindex('@', OTHERM) >=4 then substring( OTHERM,1,charindex('@',OTHERM)-4) +'***' + substring(OTHERM,charindex('@',OTHERM),len(OTHERM))
+			 else '***'end as  OTHERM 
+			 <!-- SUBSTR(OTHERM, 1, INSTR(OTHERM, '@') - 4) || '***' || SUBSTR(OTHERM, INSTR(OTHERM, '@')) AS OTHERM--> 
+		FROM AUTH_STAT, PORTALUSER
+			where 1=1
+			and  AUTH_STAT.CN = #{pCn}
+		    and PORTALUSER.cn = #{pCn}
+		<if test="pDateFlag == 1 and pCn != null and pCn != ''" > and  AUTH_STAT.EVENT_TYPE = '공인인증서'</if> 
+		<if test="pDateFlag == 2 and pCn != null and pCn != ''" > and  AUTH_STAT.EVENT_TYPE = '신용카드'</if> 
+		<if test="pDateFlag == 3 and pCn != null and pCn != ''" > and  AUTH_STAT.EVENT_TYPE = '아이핀'</if> 
+		<if test="pDateFlag == 4 and pCn != null and pCn != ''" > and  AUTH_STAT.EVENT_TYPE = '이메일'</if> 
+		<if test="pDateFlag == 5 and pCn != null and pCn != ''" > and  AUTH_STAT.EVENT_TYPE = '핸드폰'</if> 
+		
+	</select>
+	
+	<select id="insertAuthCheck" parameterType="AuthCheckVo">
+		insert into AUTH_STAT (
+			EVENT_TYPE, TIMESLICE, CN
+		) values (
+			#{event_type}, #{timeslice}, #{cn}
+		)
+	</select>
+	
+</mapper>

@@ -1,0 +1,46 @@
+#set( $titleImage = $link.getContextPath() + "/images/sub/cm/title_cm_" + $menu.getPathKey() + ".gif" )
+
+						<form name="searchForm" method="get">
+						<div class="cs">
+							<div class="cs-search"><img src="$titleImage" border="0" /></div>
+						</div>
+						</form>
+						<div class="cs-result">
+							<table cellspacing="0" cellpadding="0" border="0" width="100%" align="center">
+								<tr>
+									<td bgcolor="#b5b5b5" colspan="3">
+										<table cellspacing="1" cellpadding="2" border="0" width="100%" style="height: 24px">
+											<tr bgcolor="#FFFFFF" align="center">
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="30%">GROUP</td>
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="30%">JOB</td>
+												<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="40%">CRON EXPRESSION</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<!--// 가이드 TR // -->
+									<td width="30%" height="1"></td>
+									<td width="30%"></td>
+									<td width="40%"></td>
+								</tr>
+#if( $listScheduler.size() == 0 )
+								<tr>
+									<td colspan="3" align="center" class="text-result-no">검색 결과 데이터가 존재하지 않습니다.</td>
+								</tr>
+#else
+	#foreach( $scheduler in $listScheduler )
+								<tr class="text-result">
+									<td>$scheduler.groupName</td>
+									<td>$scheduler.jobName</td>
+									<td>$scheduler.cronExpression</td>
+								</tr>
+								<tr>
+									<td colspan="3" background="$link.getContextPath()/images/sub/default/dot_line.gif"><img
+										src="$link.getContextPath()/images/sub/default/dot_line.gif" border="0" /></td>
+								</tr>
+	#end
+#end
+							</table>
+						</div>
+

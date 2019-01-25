@@ -1,0 +1,19 @@
+						<div class="title">
+							<p class="left">
+#set( $userId = $authUtil.getUserId($session) )
+#set( $name   = $authUtil.getUserName($session) )
+#set( $lastLogin   = $authUtil.getLastLogin($session))
+#if( $userId )
+								안녕하세요! $name($userId)님! 마지막 접속일 : $lastLogin
+#end
+							</p>
+							<p class="left">
+								<a href="$link.getContextPath()/logout.do"><img
+									src="$link.getContextPath()/images/sub/default/logout.gif" border="0"/></a>
+							</p>
+							<p class="right">
+								$menu.getNavi()
+							</p>
+							<div></div>
+							<!--  <div class="clear"></div>-->
+						</div>

@@ -1,0 +1,235 @@
+#set( $titleImage = $link.getContextPath() + "/images/sub/cm/title_cm_" + $menu.getPathKey() + ".gif" )
+
+						<div class="stats">
+							<p style="padding: 20px 0 0 20px">
+								<img src="$titleImage" border="0" />
+							</p>
+							<form name="searchForm" method="get">
+							<div class="stats01">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+									<tr height="30px">
+										<td width="44%"><img src="$link.getContextPath()/images/sub/default/img_st01.gif" width="71" height="14" /></td>
+										<td width="2%">&nbsp;</td>
+										<td width="40%">&nbsp;</td>
+										<td width="2%">&nbsp;</td>
+										<td width="12%">&nbsp;</td>
+									</tr>
+									<tr height="38px">
+										<td bgcolor="#ebebeb" align="center" valign="middle" style="padding-left: 0px;">
+											<a href="javascript:setEventType('KONG')"><img id="imgKONG" src="$link.getContextPath()/images/sub/default/btn_imgKONG_on.gif" width="73" height="25" border="0" /></a>
+											<a href="javascript:setEventType('SIN')"><img id="imgSIN" src="$link.getContextPath()/images/sub/default/btn_imgSIN_on.gif" width="73" height="25" border="0" /></a>
+											<a href="javascript:setEventType('EMAIL')"><img id="imgEMAIL" src="$link.getContextPath()/images/sub/default/btn_imgEMAIL_on.gif" width="73" height="25" border="0" /></a>
+											<a href="javascript:setEventType('IPIN')"><img id="imgIPIN" src="$link.getContextPath()/images/sub/default/btn_imgIPIN_on.gif" width="73" height="25" border="0" /></a>
+											<a href="javascript:setEventType('TEL')"><img id="imgTEL" src="$link.getContextPath()/images/sub/default/btn_imgTEL_on.gif" width="73" height="25" border="0" /></a>
+											<input type="hidden" name="pEvent_type">
+										</td>
+										<td>&nbsp;</td>
+										<td bgcolor="#ebebeb" align="center" valign="top" style="padding-left: 0px; padding-top: 2px; ">
+											<input type="hidden" name="pPeriod" value="SITE">
+											<select name="pYear" tabindex="3">
+											#foreach( $array in $yearArr )
+												<option value="$array[0]">$array[1]년</option>
+											#end
+											</select>
+											<select name="pMonth" tabindex="4">
+											#foreach( $array in $monthArr )
+												<option value="$array[0]">$array[1]월</option>
+											#end
+											</select>
+											<select name="pDay" tabindex="5">
+											#foreach( $array in $dayArr )
+												<option value="$array[0]">$array[1]일</option>
+											#end
+											</select>
+											~
+											<select name="pYear2" tabindex="6">
+											#foreach( $array in $yearArr )
+												<option value="$array[0]">$array[1]년</option>
+											#end
+											</select>
+											<select name="pMonth2" tabindex="7">
+											#foreach( $array in $monthArr )
+												<option value="$array[0]">$array[1]월</option>
+											#end
+											</select>
+											<select name="pDay2" tabindex="8">
+											#foreach( $array in $dayArr )
+												<option value="$array[0]">$array[1]일</option>
+											#end
+											</select>
+										</td>
+										<td>&nbsp;</td>
+										<td bgcoloor="#ebebeb" style="padding-left: 10px;" align="right">
+											<a href="javascript:search()"><img src="$link.getContextPath()/images/sub/cm/btn_serach.gif" tabindex="9" border="0" /></a>
+										</td>
+									</tr>
+								</table>
+							</div>
+							</form>
+							<p>
+							<p>
+#if( $listEventStat.size() == 0 )
+							<div class="stats02" align="center">
+								<span style="color: #333; font-size: 12pt">
+									검색 결과 데이터가 존재하지 않습니다.
+								</span>
+							</div>
+#else
+							<div class="stats02">
+								<span style="color: #333; font-size: 12pt">선택한 검색 조건:
+								$!eventTypeCondition,
+								$!dateCondition
+								</span>
+								<!-- <div class="excel">
+									<input type="button" value="엑셀다운로드" onclick="javascript:excel()">
+								</div> -->
+							</div>
+							</p>
+							<p>
+							<div class="stats03">
+								<p style="font-size: 13px; padding: 0 0 10px 10px;">
+									사이트별퉁계
+								</p>
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td>
+											<table cellspacing="0" cellpadding="0" border="0" width="100%" align="center">
+												<tr>
+													<td bgcolor="#b5b5b5" colspan="7">
+														<table cellspacing="1" cellpadding="2" border="0" width="100%" style="height: 24px">
+															<tr bgcolor="#FFFFFF" align="center">
+																<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="60%">도메인</td>
+																<td background="$link.getContextPath()/images/sub/default/t-topbg.gif" width="40%">건수</td>
+															</tr>
+														</table>
+													</td>
+												</tr>
+												<tr>
+													<!--// 가이드 TR // -->
+													<td width="60%" height="1"></td>
+													<td width="40%"></td>
+												</tr>
+	#foreach ($eventStat in $listEventStat)
+												<tr class="text-result">
+													<td>$!eventStat.domain</td>
+													<td>$!eventStat.cnt</td>
+												</tr>
+												<tr>
+													<td colspan="7" background="$link.getContextPath()/images/sub/default/dot_line.gif"><img
+														src="$link.getContextPath()/images/sub/default/dot_line.gif" border="0" /></td>
+												</tr>
+	#end
+											</table>
+										</td>
+									</tr>
+								</table>
+								<p style="padding: 10px 0 10px 10px; color: rgb(255, 51, 52); font-size: 13pt; font-weight: bold; text-align: right">
+									TOTAL: $total 건
+								</p>
+							</div>
+#end
+							</p>
+						</div>
+						
+						<div class="alret">
+							<p class="orange-bold">Tip. 검색을 이용하시는 방법</p>
+							<p class="pad20">
+								- 시작 연월일과 끝 연월일을 선택합니다. 최대 <b>31일</b>까지 선택할 수 있습니다.<br>
+							</p>
+						</div>
+
+<script language="javascript" src="$link.getContextPath()/js/common.js"></script>
+<script language="javascript">
+<!--
+function search() {
+	if (checkPeriod() == false) {
+		alert('검색가능기간을 초과하였습니다.');
+		return;
+	}
+	
+	document.searchForm.action = "$link.getContextPath()/authstat/site/list.do";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+/*
+function excel() {
+	document.searchForm.action = "$link.getContextPath()/eventstat/site/excel.do";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}*/
+
+function checkPeriod() {
+	var sf = document.searchForm;
+
+	var begin = new Date();
+	begin.setFullYear(sf.pYear.value);
+	begin.setMonth(sf.pMonth.value - 1);
+	begin.setDate(sf.pDay.value);
+	var end = new Date();
+	end.setFullYear(sf.pYear2.value);
+	end.setMonth(sf.pMonth2.value - 1);
+	end.setDate(sf.pDay2.value);
+
+	var gap = end.getTime() - begin.getTime();
+	
+	return gap < 31 * 24 * 60 * 60 * 1000; 
+}
+
+#set( $yday = $date.getSystemTime() - 86400000 )
+
+function initPeriod() {
+	var sf = document.searchForm;
+	
+	sf.pYear.value			= "$date.format('yyyy', $yday)";
+	sf.pMonth.value			= "$date.format('MM', $yday)";
+	sf.pDay.value			= "$date.format('dd', $yday)";
+
+	sf.pYear2.value			= "$date.format('yyyy', $yday)";
+	sf.pMonth2.value		= "$date.format('MM', $yday)";
+	sf.pDay2.value			= "$date.format('dd', $yday)";
+
+}
+
+function setEventTypeImage(imgId, eventType) {
+	var imgObj = document.getElementById(imgId);
+	var onoff = "off";
+	if (imgObj.id == ('img' + eventType)) {
+		onoff = "on";
+	}
+	var src = "$link.getContextPath()/images/sub/default/btn_" + imgId + "_" + onoff + ".gif";
+	imgObj.src = src;
+}
+
+function setEventType(eventType) {
+	var sf = document.searchForm;
+	sf.pEvent_type.value = eventType;
+
+	setEventTypeImage("imgEMAIL", eventType);
+	setEventTypeImage("imgIPIN", eventType);
+	setEventTypeImage("imgKONG", eventType);
+	setEventTypeImage("imgSIN", eventType);
+	setEventTypeImage("imgTEL", eventType);
+}
+function initSearch() {
+	var sf = document.searchForm;
+#if( "$!params.pPeriod" != "" )
+	setEventType("$!params.pEvent_type");
+	sf.pYear.value			= "$!params.pYear";
+	sf.pMonth.value			= "$!params.pMonth";
+	sf.pDay.value			= "$!params.pDay";
+
+	sf.pYear2.value			= "$!params.pYear2";
+	sf.pMonth2.value		= "$!params.pMonth2";
+	sf.pDay2.value			= "$!params.pDay2";
+	
+#else
+	setEventType("KONG");
+	initPeriod();
+#end
+}
+
+initSearch();
+
+//-->
+</script>

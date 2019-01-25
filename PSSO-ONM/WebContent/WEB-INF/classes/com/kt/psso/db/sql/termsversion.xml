@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="termsVersion">
+	
+	<resultMap id="termsVersionResultMap" type="TermsVersionVo">
+		<result property="version" column="VERSION"/>
+		<result property="regdate" column="REGDATE"/>
+	</resultMap>
+	
+
+	<select id="listTermsVersion" parameterType="SearchVo" resultMap="termsVersionResultMap">
+		select VERSION
+    	     , REGDATE
+    	from AGMVERSION
+    	where 1=1
+    	order by VERSION desc
+	</select>
+	
+	<select id="countTermsVersion" parameterType="SearchVo" resultType="int">
+		select count(*) as CNT
+    	from AGMVERSION
+    	where 1=1
+	</select>
+	
+	<insert id="insertTermsVersion" parameterType="TermsVersionVo">
+		insert into AGMVERSION (
+			VERSION, REGDATE
+		) values (
+		  #{version}, CONVERT(VARCHAR(19),GETDATE(),121)
+		)
+	</insert>
+	
+	<delete id="deleteTermsVersion" parameterType="TermsVersionVo">
+		delete from AGMVERSION 
+		where VERSION = #{version}
+	</delete>
+	
+</mapper>

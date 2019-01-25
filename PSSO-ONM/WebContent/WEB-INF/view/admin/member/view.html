@@ -1,0 +1,174 @@
+#set( $titleImage = $link.getContextPath() + "/images/sub/cm/title_cm_" + $menu.getPathKey() + ".gif" )
+
+						<form name="searchForm" method="get">
+						<input type="hidden" name="pId" />
+						<input type="hidden" name="pName" />
+						<input type="hidden" name="pTel" />
+						<input type="hidden" name="pPageNo" />
+						<input type="hidden" name="pPageCount" />
+						<input type="hidden" name="userId" />
+						<div class="cs">
+							<div class="cs-search"><img src="$titleImage" border="0" /></div>
+						</div>
+						</form>
+
+						<div class="list_detail">
+							<center>
+								<div class="box-noheight">
+									<table width="800px" border="0" cellspacing="0" cellpadding="0" align="center">
+										<tr height="25px">
+											<td bgcolor="#d6d6d6">
+												<table width="800" border="0" cellspacing="1" cellpadding="1">
+													<tr height="45">
+														<td width="40%" class="tt">항목명</td>
+														<td width="60%" class="tt">항목값</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															아이디
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!memberVo.userId
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															이름
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!memberVo.userName
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															연락처
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!stringUtil.markPhoneNumber($!memberVo.telNo)
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															이메일
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!memberVo.otherm
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															사용자유형
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!roles.get($!memberVo.userType)
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															로그인허용
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+														#if( "$!memberVo.useFlag" == "1" )
+																허용함
+														#else
+																허용안함
+														#end
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															접근아이피
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!memberVo.userHost
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															등록일
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!memberVo.regDate
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															수정일
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!memberVo.updtDate
+														</td>
+													</tr>
+													<tr>
+														<td class="tone" bgcolor="#f7f7f7">
+															비밀번호 변경일
+														</td>
+														<td class="ttwo" bgcolor="#ffffff">
+															$!memberVo.PswdUpdtDate
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</center>
+						</div>
+						<div style="padding: 10px 0 20px 0; text-align: center;">
+							<a href="javascript:list()"><img src="$link.getContextPath()/images/button/btn_list.gif" border="0" /></a>
+							<a href="javascript:modForm()"><img src="$link.getContextPath()/images/button/btn_change.gif" border="0" /></a>
+							<a href="javascript:del()"><img src="$link.getContextPath()/images/button/btn_del.gif" border="0" /></a>
+						</div>
+						<div class="alret">
+							<p class="orange-bold">Tip. 중요공지</p>
+							<p class="pad20">
+								<b>- 수정/삭제된 데이터는 복구되지 않습니다.</b></br> 
+								작업시 변경되지 않거나 에러 경고를 보시면 반드시 웹마스터에게 알려주시기 바랍니다.</br> 
+								</br>
+							</p>
+						</div>
+
+<script language="javascript">
+<!--
+
+function list()
+{
+	document.searchForm.userId.value = "";
+	document.searchForm.action = "$link.getContextPath()/in/member/list.do";
+	document.searchForm.method = "get";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function modForm() {
+	document.searchForm.userId.value = "$!memberVo.userId";
+	document.searchForm.action = "$link.getContextPath()/in/member/form.do";
+	document.searchForm.method = "get";
+	document.searchForm.target = "_self";
+	document.searchForm.submit();
+}
+
+function del() {
+	if (confirm('정말 삭제하시겠습니까?') == false) return;
+	document.searchForm.userId.value = "$!memberVo.userId";
+	document.searchForm.action = "$link.getContextPath()/in/member/del.do";
+	document.searchForm.method = "post";
+	document.searchForm.target = "hiddenIFrame";
+	document.searchForm.submit();
+}
+
+function init() {
+	// init search parameters
+	var sf = document.searchForm;
+	sf.pId.value		= "$!params.pId";
+	sf.pName.value		= "$!params.pName";
+	sf.pTel.value		= "$!params.pTel";
+	sf.pPageNo.value	= "$!params.pPageNo";
+	sf.pPageCount.value	= "$!params.pPageCount";
+}
+
+init();
+
+//-->
+</script>
+<iframe name="hiddenIFrame" src="" frameborder="0" height="0" width="100%"></iframe>

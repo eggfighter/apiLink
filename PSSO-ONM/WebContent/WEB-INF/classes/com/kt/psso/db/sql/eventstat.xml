@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eventstat">
+	
+	<resultMap id="eventStatResultMap" type="EventStatVo">
+		<id 	property="event_type"   column="EVENT_TYPE" />
+		<id 	property="timeslice"    column="TIMESLICE" />
+		<id 	property="domain"       column="DOMAIN" />
+		<result property="cnt"          column="CNT" />
+		<result property="year"         column="YEAR" />
+		<result property="month"        column="MONTH" />
+		<result property="day"          column="DAY" />
+		<result property="hour"         column="HOUR" />
+		<result property="regdate"      column="REGDATE" />
+		<result property="upddate"      column="UPDDATE" />
+		<result property="category"		column="CATEGORY" />
+	</resultMap>
+
+	<select id="getEventStat" parameterType="EventStatVo" resultMap="eventStatResultMap">
+		select EVENT_TYPE, TIMESLICE, DOMAIN
+			 , CNT, YEAR, MONTH
+			 , DAY, HOUR
+			 , REGDATE
+			 , UPDDATE
+    	from EVENT_STAT
+    	where EVENT_TYPE = #{event_type}
+    	  and TIMESLICE = #{timeslice}
+    	  and DOMAIN = #{domain}
+	</select>
+
+	<insert id="insertEventStat" parameterType="EventStatVo">
+		insert into EVENT_STAT (
+			EVENT_TYPE, TIMESLICE, DOMAIN
+		  , CNT, YEAR, MONTH
+		  , DAY, HOUR, REGDATE
+		  , UPDDATE
+		) values (
+			#{event_type}, #{timeslice}, #{domain}
+		  , #{cnt}, #{year}, #{month}
+		  , #{day}, #{hour}, CONVERT(varchar(19),GETDATE(),121)
+		  , null
+		)
+	</insert>
+
+	<update id="updateEventStat" parameterType="EventStatVo">
+		update EVENT_STAT set
+			  CNT		= #{cnt}
+			, UPDDATE	= CONVERT(varchar(19),GETDATE(),121)
+		where EVENT_TYPE = #{event_type}
+		  and TIMESLICE = #{timeslice}
+		  and DOMAIN = #{domain}
+	</update>
+
+	<!-- TIME -->
+
+	<select id="listEventStatHour" parameterType="EventStatSearchVo" resultMap="eventStatResultMap">
+		select  MONTH + '-' + DAY + ' ' + HOUR + 'h' as CATEGORY
+		     , ISNULL(sum(CNT),0) as CNT
+		from EVENT_STAT
+		where EVENT_TYPE = #{pEvent_type}
+		and substring(TIMESLICE,1,10) between '${pYear}${pMonth}${pDay}00' and '${pYear2}${pMonth2}${pDay2}23'
+		group by EVENT_TYPE, YEAR, MONTH, DAY, HOUR
+    	order by YEAR, MONTH, DAY, HOUR asc
+	</select>
+	
+	<select id="listEventStatDay" parameterType="EventStatSearchVo" resultMap="eventStatResultMap">
+		select MONTH + '-' + DAY as CATEGORY
+		     , ISNULL(sum(CNT),0) as CNT
+		from EVENT_STAT
+		where EVENT_TYPE = #{pEvent_type}
+		and substring(TIMESLICE,1,10) between '${pYear}${pMonth}${pDay}00' and '${pYear2}${pMonth2}${pDay2}23'
+		group by EVENT_TYPE, YEAR, MONTH, DAY
+    	order by YEAR, MONTH, DAY asc
+	</select>
+	
+	<select id="listEventStatMonth" parameterType="EventStatSearchVo" resultMap="eventStatResultMap">
+		select YEAR + '-' + MONTH as CATEGORY
+		     , ISNULL(sum(CNT),0) as CNT
+		from EVENT_STAT
+		where EVENT_TYPE = #{pEvent_type}
+		and substring(TIMESLICE,1,10) between '${pYear}${pMonth}0100' and '${pYear2}${pMonth2}3123'
+		group by EVENT_TYPE, YEAR, MONTH
+    	order by YEAR, MONTH asc
+	</select>
+	
+	<select id="totalEventStatHour" parameterType="EventStatSearchVo" resultType="int">
+		select ISNULL(sum(CNT), 0) as CNT
+    	from EVENT_STAT
+		where EVENT_TYPE = #{pEvent_type}
+		and substring(TIMESLICE,1,10) between '${pYear}${pMonth}${pDay}00' and '${pYear2}${pMonth2}${pDay2}23'
+	</select>
+	
+	<select id="totalEventStatDay" parameterType="EventStatSearchVo" resultType="int">
+		select ISNULL(sum(CNT), 0) as CNT
+    	from EVENT_STAT
+		where EVENT_TYPE = #{pEvent_type}
+		and substring(TIMESLICE,1,10) between '${pYear}${pMonth}${pDay}00' and '${pYear2}${pMonth2}${pDay2}23'
+	</select>
+	
+	<select id="totalEventStatMonth" parameterType="EventStatSearchVo" resultType="int">
+		select ISNULL(sum(CNT), 0) as CNT
+    	from EVENT_STAT
+		where EVENT_TYPE = #{pEvent_type}
+		and substring(TIMESLICE,1,10) between '${pYear}${pMonth}0100' and '${pYear2}${pMonth2}3123'
+	</select>
+
+	<!-- SITE -->
+
+	<select id="listEventStatBySite" parameterType="EventStatSearchVo" resultMap="eventStatResultMap">
+		select DOMAIN
+		     , ISNULL(sum(CNT),0) as CNT
+		from EVENT_STAT
+		where 1=1
+		and EVENT_TYPE = #{pEvent_type}
+		and substring(TIMESLICE,1,10) between '${pYear}${pMonth}${pDay}00' and '${pYear2}${pMonth2}${pDay2}23'
+		group by DOMAIN
+    	order by DOMAIN asc
+	</select>
+	
+	<select id="totalEventStatBySite" parameterType="EventStatSearchVo" resultType="int">
+		select ISNULL(sum(CNT),0) as CNT
+		from EVENT_STAT
+		where 1=1
+		and EVENT_TYPE = #{pEvent_type}
+		and substring(TIMESLICE,1,10) between '${pYear}${pMonth}${pDay}00' and '${pYear2}${pMonth2}${pDay2}23'
+	</select>
+
+	<select id="listEventStatBySiteExcel" parameterType="EventStatSearchVo" resultMap="eventStatResultMap">
+		select DAY, DOMAIN
+		     , ISNULL(sum(CNT),0) as CNT
+		from (select DAY, DOMAIN, CNT
+				from EVENT_STAT		
+				where 1=1
+				and EVENT_TYPE = #{pEvent_type}
+				and substring(TIMESLICE,1,10) between '${pYear}${pMonth}${pDay}00' and '${pYear2}${pMonth2}${pDay2}23')
+		group by DOMAIN, DAY
+    	order by DAY asc
+	</select>
+</mapper>
